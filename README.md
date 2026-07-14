@@ -12,12 +12,12 @@ listings, banner placements).
 
 ## Repository contents
 
-This repository currently holds the go-to-market and partner-facing
-documentation. Application code (frontend, backend services, Pi SDK
-integration) will be added in later phases.
+This repository holds the marketplace application (`web/`) and the
+go-to-market / partner-facing documentation (`docs/`).
 
 | Path | Contents |
 |------|----------|
+| `web/` | The marketplace web app (Next.js + Prisma + Pi SDK). See `web/README.md` for setup, demo accounts, and the Pi payment flow. |
 | `docs/partners/partner-brief-pdf-outline.md` | Ready-to-send one-page PDF outline for professional partner briefs, with a variant matrix for each market (US, Kenya/East Africa, Spain/EU, Pi ecosystem, tokenization partners). |
 | `docs/partners/outreach-emails.md` | Cold and warm outreach email templates for agents/brokerages, developers, Pi ecosystem teams, and tokenization partners, plus follow-up and breakup emails. |
 | `docs/partners/outreach-playbook.md` | The operating playbook that ties briefs and emails together: sequence cadence, channel strategy per market, objection handling, and tracking/KPIs. |

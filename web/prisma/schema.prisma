@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  piUid     String?   @unique // Pi Network user id from Pi.authenticate
+  username  String    @unique
+  role      String    @default("INVESTOR") // INVESTOR | AGENT | ADMIN
+  kycStatus String    @default("NONE") // NONE | PENDING | VERIFIED
+  createdAt DateTime  @default(now())
+  listings  Listing[]
+  payments  Payment[]
+  leads     Lead[]    @relation("AgentLeads")
+}
+
+model Listing {
+  id            String    @id @default(cuid())
+  agent         User      @relation(fields: [agentId], references: [id])
+  agentId       String
+  status        String    @default("ACTIVE") // PENDING_REVIEW | ACTIVE | SUSPENDED | SOLD
+  type          String // RESIDENTIAL | COMMERCIAL | LAND
+  title         String
+  description   String
+  pricePi       Float // asking price expressed in Pi for ecosystem-native display
+  priceUsd      Float // fiat reference price
+  country       String
+  city          String
+  region        String?
+  bedrooms      Int?
+  bathrooms     Int?
+  areaSqm       Int?
+  grossYieldPct Float? // simple investor metric
+  photoSeed     String? // seed for placeholder artwork until real media uploads land
+  featuredUntil DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  leads         Lead[]
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  listingId String
+  agent     User     @relation("AgentLeads", fields: [agentId], references: [id])
+  agentId   String
+  name      String
+  contact   String // email / phone / Pi username as given by the inquirer
+  message   String
+  status    String   @default("NEW") // NEW | CONTACTED | CLOSED
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  piPaymentId  String?  @unique // payment id issued by the Pi platform
+  txid         String? // blockchain txid on completion
+  amountPi     Float
+  memo         String
+  productType  String // FEATURED_LISTING (MVP); SPONSORED_AGENT / BANNER_AD later
+  targetId     String? // e.g. listing id being featured
+  durationDays Int?
+  status       String   @default("CREATED") // CREATED | APPROVED | COMPLETED | CANCELLED
+  createdAt    DateTime @default(now())
+}
