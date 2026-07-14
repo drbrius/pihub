@@ -11,9 +11,14 @@ export default async function PromotePage({ params }: { params: { id: string } }
   const user = await currentUser();
   if (!user || user.role !== "AGENT") {
     return (
-      <div className="mx-auto max-w-md py-16 text-center">
-        <p className="text-slate-600">Sign in with an agent account to promote listings.</p>
-        <Link href="/login" className="mt-4 inline-block font-medium text-violet-700 hover:underline">
+      <div className="mx-auto max-w-md py-20 text-center">
+        <p className="font-serif text-lg italic text-stone">
+          Sign in with an agent account to promote listings.
+        </p>
+        <Link
+          href="/login"
+          className="mt-5 inline-block text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-dark hover:text-gold"
+        >
           Sign in →
         </Link>
       </div>
@@ -26,19 +31,28 @@ export default async function PromotePage({ params }: { params: { id: string } }
   const featured = listing.featuredUntil && listing.featuredUntil.getTime() > Date.now();
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Promote “{listing.title}”</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Featured listings rank at the top of search results and appear on the homepage
-          carousel.{" "}
+        <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
+          Placement
+        </p>
+        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">
+          Promote &ldquo;{listing.title}&rdquo;
+        </h1>
+        <div className="mt-3 h-px w-16 bg-gold" />
+        <p className="mt-3 text-sm leading-relaxed text-stone">
+          Featured properties lead the collection in search results and appear in the
+          homepage selection.{" "}
           {featured &&
             `Currently featured until ${listing.featuredUntil!.toLocaleDateString()} — purchases extend the window.`}
         </p>
       </div>
       <PromotePanel listingId={listing.id} products={FEATURED_PRODUCTS} />
-      <Link href="/agent" className="inline-block text-sm font-medium text-violet-700 hover:underline">
-        ← Back to dashboard
+      <Link
+        href="/agent"
+        className="inline-block text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-dark hover:text-gold"
+      >
+        ← Private Office
       </Link>
     </div>
   );

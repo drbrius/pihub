@@ -1,16 +1,19 @@
 import { AuthPanel } from "@/components/AuthPanel";
+import { LogoMark } from "@/components/Logo";
 
 export default function LoginPage() {
   return (
-    <div className="mx-auto max-w-md space-y-6 py-10">
+    <div className="mx-auto max-w-md space-y-8 py-12">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-slate-800">Sign in to HomePi Hub</h1>
-        <p className="mt-2 text-sm text-slate-500">
-          Investors browse free. Agents get a dashboard, listings, and Pi-priced ad
-          products.
+        <LogoMark className="mx-auto h-16 w-16 text-gold" />
+        <h1 className="mt-5 font-serif text-3xl font-medium text-ink">Welcome</h1>
+        <div className="mx-auto mt-3 h-px w-14 bg-gold" />
+        <p className="mt-4 text-sm leading-relaxed text-stone">
+          Investors browse the collection freely. Professionals receive a private office
+          with listings, enquiries, and Pi-denominated placement.
         </p>
       </div>
-      <div className="rounded-2xl border border-violet-100 bg-white p-6">
+      <div className="border border-hairline bg-white p-8">
         <AuthPanel />
       </div>
     </div>

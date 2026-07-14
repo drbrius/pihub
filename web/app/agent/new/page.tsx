@@ -8,9 +8,14 @@ export default async function NewListingPage() {
   const user = await currentUser();
   if (!user || user.role !== "AGENT") {
     return (
-      <div className="mx-auto max-w-md py-16 text-center">
-        <p className="text-slate-600">An agent account is required to publish listings.</p>
-        <Link href="/login" className="mt-4 inline-block font-medium text-violet-700 hover:underline">
+      <div className="mx-auto max-w-md py-20 text-center">
+        <p className="font-serif text-lg italic text-stone">
+          An agent account is required to consign listings.
+        </p>
+        <Link
+          href="/login"
+          className="mt-5 inline-block text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-dark hover:text-gold"
+        >
           Sign in →
         </Link>
       </div>
@@ -18,15 +23,19 @@ export default async function NewListingPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Publish a new listing</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Listings are free. After publishing you can optionally buy featured placement in
+        <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
+          Private Office
+        </p>
+        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">Consign a Property</h1>
+        <div className="mt-3 h-px w-16 bg-gold" />
+        <p className="mt-3 text-sm text-stone">
+          Listings are complimentary. After publishing you may acquire featured placement in
           Pi.
         </p>
       </div>
-      <div className="rounded-2xl border border-violet-100 bg-white p-6">
+      <div className="border border-hairline bg-white p-8">
         <NewListingForm />
       </div>
     </div>

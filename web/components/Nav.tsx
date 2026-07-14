@@ -3,27 +3,29 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePi } from "./PiProvider";
+import { LogoMark, Wordmark } from "./Logo";
+
+const navLink =
+  "text-[0.7rem] font-medium uppercase tracking-luxe text-ivory/70 transition hover:text-gold-light";
 
 export function Nav() {
   const { user, logout } = usePi();
   const router = useRouter();
 
   return (
-    <header className="border-b border-violet-100 bg-white/90 backdrop-blur sticky top-0 z-20">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-violet-700">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-violet-600 text-white">
-            π
-          </span>
-          HomePi Hub
+    <header className="sticky top-0 z-20 border-b border-gold-dark/40 bg-ink/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <Link href="/" className="flex items-center gap-3">
+          <LogoMark className="h-11 w-11 text-gold-light" />
+          <Wordmark dark />
         </Link>
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/search" className="text-slate-600 hover:text-violet-700">
-            Browse
+        <nav className="flex items-center gap-7">
+          <Link href="/search" className={navLink}>
+            The Collection
           </Link>
           {user?.role === "AGENT" && (
-            <Link href="/agent" className="text-slate-600 hover:text-violet-700">
-              Agent dashboard
+            <Link href="/agent" className={navLink}>
+              Private Office
             </Link>
           )}
           {user ? (
@@ -33,14 +35,14 @@ export function Nav() {
                 router.push("/");
                 router.refresh();
               }}
-              className="rounded-lg border border-violet-200 px-3 py-1.5 text-slate-700 hover:bg-violet-50"
+              className="border border-gold-dark/60 px-4 py-2 text-[0.7rem] font-medium uppercase tracking-wide2 text-gold-light transition hover:border-gold-light hover:text-paper"
             >
               {user.username} · Sign out
             </button>
           ) : (
             <Link
               href="/login"
-              className="rounded-lg bg-violet-600 px-4 py-1.5 font-medium text-white hover:bg-violet-700"
+              className="bg-gold px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-wide2 text-ink transition hover:bg-gold-light"
             >
               Sign in
             </Link>

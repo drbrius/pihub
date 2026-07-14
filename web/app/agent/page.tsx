@@ -8,14 +8,15 @@ export default async function AgentDashboard() {
   const user = await currentUser();
   if (!user || user.role !== "AGENT") {
     return (
-      <div className="mx-auto max-w-md py-16 text-center">
-        <h1 className="text-xl font-bold text-slate-800">Agent dashboard</h1>
-        <p className="mt-2 text-sm text-slate-500">
-          Sign in with an agent account to manage listings, leads, and ad products.
+      <div className="mx-auto max-w-md py-20 text-center">
+        <h1 className="font-serif text-3xl font-medium text-ink">Private Office</h1>
+        <div className="mx-auto mt-3 h-px w-14 bg-gold" />
+        <p className="mt-4 text-sm text-stone">
+          Sign in with an agent account to manage listings, enquiries, and placement.
         </p>
         <Link
           href="/login"
-          className="mt-4 inline-block rounded-xl bg-violet-600 px-6 py-2.5 font-semibold text-white hover:bg-violet-700"
+          className="mt-6 inline-block bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
         >
           Sign in
         </Link>
@@ -40,69 +41,78 @@ export default async function AgentDashboard() {
   const now = Date.now();
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="space-y-12">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Agent dashboard</h1>
-          <p className="text-sm text-slate-500">
-            {user.username} · {listings.length} listing{listings.length === 1 ? "" : "s"} ·{" "}
-            {leads.length} recent lead{leads.length === 1 ? "" : "s"}
+          <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
+            Private Office
+          </p>
+          <h1 className="mt-1 font-serif text-3xl font-medium text-ink">{user.username}</h1>
+          <div className="mt-3 h-px w-16 bg-gold" />
+          <p className="mt-3 text-[0.7rem] uppercase tracking-wide2 text-stone">
+            {listings.length} listing{listings.length === 1 ? "" : "s"} · {leads.length}{" "}
+            recent enquir{leads.length === 1 ? "y" : "ies"}
           </p>
         </div>
         <Link
           href="/agent/new"
-          className="rounded-xl bg-violet-600 px-5 py-2.5 font-semibold text-white hover:bg-violet-700"
+          className="bg-gold px-7 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
         >
-          + New listing
+          + New Listing
         </Link>
       </div>
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-slate-800">My listings</h2>
+        <h2 className="mb-4 font-serif text-2xl font-medium text-ink">Portfolio</h2>
         {listings.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-violet-200 bg-white p-8 text-center text-sm text-slate-500">
-            No listings yet — publish your first property to start receiving leads.
+          <p className="border border-dashed border-gold-dark/40 bg-white p-10 text-center font-serif text-lg italic text-stone">
+            No listings yet — consign your first property to begin receiving enquiries.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-violet-100 bg-white">
+          <div className="overflow-x-auto border border-hairline bg-white">
             <table className="w-full text-sm">
-              <thead className="bg-violet-50 text-left text-xs uppercase tracking-wide text-slate-500">
+              <thead className="border-b border-hairline bg-ivory text-left text-[0.6rem] uppercase tracking-luxe text-stone">
                 <tr>
-                  <th className="px-4 py-3">Listing</th>
-                  <th className="px-4 py-3">Price</th>
-                  <th className="px-4 py-3">Leads</th>
-                  <th className="px-4 py-3">Featured</th>
-                  <th className="px-4 py-3"></th>
+                  <th className="px-5 py-3.5">Property</th>
+                  <th className="px-5 py-3.5">Price</th>
+                  <th className="px-5 py-3.5">Enquiries</th>
+                  <th className="px-5 py-3.5">Placement</th>
+                  <th className="px-5 py-3.5"></th>
                 </tr>
               </thead>
               <tbody>
                 {listings.map((l) => {
                   const featured = l.featuredUntil && l.featuredUntil.getTime() > now;
                   return (
-                    <tr key={l.id} className="border-t border-violet-50">
-                      <td className="px-4 py-3">
-                        <Link href={`/listings/${l.id}`} className="font-medium text-violet-700 hover:underline">
+                    <tr key={l.id} className="border-t border-hairline/60">
+                      <td className="px-5 py-4">
+                        <Link
+                          href={`/listings/${l.id}`}
+                          className="font-serif text-base font-medium text-ink transition hover:text-gold-dark"
+                        >
                           {l.title}
                         </Link>
-                        <p className="text-xs text-slate-400">
+                        <p className="mt-0.5 text-[0.65rem] uppercase tracking-wide2 text-stone">
                           {l.city}, {l.country}
                         </p>
                       </td>
-                      <td className="px-4 py-3">{l.pricePi.toLocaleString()} π</td>
-                      <td className="px-4 py-3">{l._count.leads}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-4 font-serif font-semibold">
+                        {l.pricePi.toLocaleString()} π
+                      </td>
+                      <td className="px-5 py-4">{l._count.leads}</td>
+                      <td className="px-5 py-4">
                         {featured ? (
-                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                            ★ until {l.featuredUntil!.toLocaleDateString()}
+                          <span className="border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
+                            Featured until {l.featuredUntil!.toLocaleDateString()}
                           </span>
                         ) : (
-                          <span className="text-xs text-slate-400">—</span>
+                          <span className="text-xs text-stone/60">—</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-5 py-4 text-right">
                         <Link
                           href={`/agent/promote/${l.id}`}
-                          className="rounded-lg border border-violet-200 px-3 py-1.5 text-xs font-medium text-violet-700 hover:bg-violet-50"
+                          className="border border-ink/30 px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark"
                         >
                           {featured ? "Extend" : "Promote"}
                         </Link>
@@ -117,26 +127,28 @@ export default async function AgentDashboard() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-slate-800">Lead inbox</h2>
+        <h2 className="mb-4 font-serif text-2xl font-medium text-ink">Enquiries</h2>
         {leads.length === 0 ? (
-          <p className="rounded-xl border border-dashed border-violet-200 bg-white p-8 text-center text-sm text-slate-500">
-            No leads yet. Featured listings rank at the top of search and typically convert
-            more inquiries.
+          <p className="border border-dashed border-gold-dark/40 bg-white p-10 text-center font-serif text-lg italic text-stone">
+            No enquiries yet. Featured properties lead the collection and typically convert
+            more interest.
           </p>
         ) : (
           <div className="space-y-3">
             {leads.map((lead) => (
-              <div key={lead.id} className="rounded-xl border border-violet-100 bg-white p-4">
+              <div key={lead.id} className="border border-hairline bg-white p-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-medium text-slate-800">
-                    {lead.name} <span className="text-slate-400">·</span>{" "}
-                    <span className="text-sm text-violet-700">{lead.contact}</span>
+                  <p className="font-serif text-base font-semibold text-ink">
+                    {lead.name}
+                    <span className="ml-3 font-sans text-xs font-normal text-gold-dark">
+                      {lead.contact}
+                    </span>
                   </p>
-                  <p className="text-xs text-slate-400">
-                    {lead.createdAt.toLocaleString()} · re: {lead.listing.title}
+                  <p className="text-[0.65rem] uppercase tracking-wide2 text-stone">
+                    {lead.createdAt.toLocaleString()} · {lead.listing.title}
                   </p>
                 </div>
-                <p className="mt-2 text-sm text-slate-600">{lead.message}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-mute">{lead.message}</p>
               </div>
             ))}
           </div>

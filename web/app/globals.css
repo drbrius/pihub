@@ -3,5 +3,10 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
+}
+
+::selection {
+  background: #b3903f;
+  color: #15130e;
 }

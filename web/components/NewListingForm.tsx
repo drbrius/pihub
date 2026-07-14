@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const input =
-  "w-full rounded-lg border border-violet-200 px-3 py-2 text-sm focus:border-violet-500 focus:outline-none";
+  "w-full border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
 
 export function NewListingForm() {
   const router = useRouter();
@@ -45,9 +45,9 @@ export function NewListingForm() {
       />
       <div className="grid grid-cols-2 gap-3">
         <select name="type" required className={input} defaultValue="RESIDENTIAL">
-          <option value="RESIDENTIAL">Residential</option>
+          <option value="RESIDENTIAL">Residence</option>
           <option value="COMMERCIAL">Commercial</option>
-          <option value="LAND">Land</option>
+          <option value="LAND">Land &amp; Estate</option>
         </select>
         <input name="grossYieldPct" type="number" step="0.1" min="0" placeholder="Gross yield % (optional)" className={input} />
         <input name="pricePi" type="number" step="any" min="1" required placeholder="Price in Pi (π)" className={input} />
@@ -61,12 +61,12 @@ export function NewListingForm() {
       </div>
       <button
         disabled={busy}
-        className="rounded-xl bg-violet-600 px-6 py-2.5 font-semibold text-white hover:bg-violet-700 disabled:opacity-50"
+        className="bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light disabled:opacity-50"
       >
-        {busy ? "Publishing…" : "Publish listing"}
+        {busy ? "Publishing…" : "Publish Listing"}
       </button>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <p className="text-xs text-slate-400">
+      {error && <p className="text-sm text-red-700">{error}</p>}
+      <p className="text-[0.65rem] leading-relaxed text-stone">
         By publishing you confirm the information is accurate and complies with the listing
         rules and Professional Code of Conduct.
       </p>

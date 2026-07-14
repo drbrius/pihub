@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+const input =
+  "w-full border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
+
 export function LeadForm({ listingId }: { listingId: string }) {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -30,41 +33,37 @@ export function LeadForm({ listingId }: { listingId: string }) {
 
   if (state === "sent") {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-green-800">
-        Inquiry sent. The listing agent will contact you directly.
+      <div className="border border-gold-dark/40 bg-ivory p-4 text-sm text-ink">
+        <p className="font-serif text-lg font-semibold">Enquiry received.</p>
+        <p className="mt-1 text-stone">The presenting agent will contact you directly.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={submit} className="space-y-3">
-      <input
-        name="name"
-        required
-        placeholder="Your name"
-        className="w-full rounded-lg border border-violet-200 px-3 py-2 text-sm"
-      />
+      <input name="name" required placeholder="Your name" className={input} />
       <input
         name="contact"
         required
         placeholder="Email, phone, or Pi username"
-        className="w-full rounded-lg border border-violet-200 px-3 py-2 text-sm"
+        className={input}
       />
       <textarea
         name="message"
         required
         rows={3}
-        placeholder="I'm interested in this property…"
-        className="w-full rounded-lg border border-violet-200 px-3 py-2 text-sm"
+        placeholder="I would like to enquire about this property…"
+        className={input}
       />
       <button
         disabled={state === "sending"}
-        className="w-full rounded-lg bg-violet-600 py-2 font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+        className="w-full bg-ink py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-light transition hover:bg-ink-soft disabled:opacity-50"
       >
-        {state === "sending" ? "Sending…" : "Contact agent"}
+        {state === "sending" ? "Sending…" : "Submit Enquiry"}
       </button>
-      {state === "error" && <p className="text-sm text-red-600">{error}</p>}
-      <p className="text-xs text-slate-400">
+      {state === "error" && <p className="text-sm text-red-700">{error}</p>}
+      <p className="text-[0.65rem] leading-relaxed text-stone">
         HomePi Hub is a technology platform, not a broker or escrow service. Verify details
         independently before sending funds.
       </p>

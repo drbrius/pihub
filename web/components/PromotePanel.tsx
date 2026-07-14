@@ -34,37 +34,49 @@ export function PromotePanel({
 
   if (done) {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-green-800">
-        Featured placement is live. Your listing now ranks at the top of search results.
+      <div className="border border-gold-dark/40 bg-ivory p-6">
+        <p className="font-serif text-xl font-semibold text-ink">Placement confirmed.</p>
+        <p className="mt-1 text-sm text-stone">
+          Your property now leads the collection in search results.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {!piAvailable && (
-        <p className="rounded-lg bg-amber-50 p-3 text-xs text-amber-800">
+        <p className="border border-gold-dark/30 bg-ivory p-3.5 text-[0.7rem] leading-relaxed text-ink-mute">
           You&apos;re outside the Pi Browser — purchases run in demo mode (no Pi is
           transferred). Open the app in the Pi Browser for real Pi payments.
         </p>
       )}
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-px border border-hairline bg-hairline sm:grid-cols-3">
         {products.map((p) => (
           <button
             key={p.id}
             onClick={() => buy(p.id)}
             disabled={busy !== null}
-            className="rounded-xl border border-violet-200 bg-white p-4 text-left transition hover:border-violet-400 hover:shadow disabled:opacity-50"
+            className="group bg-white p-6 text-left transition hover:bg-ivory disabled:opacity-50"
           >
-            <p className="font-semibold text-slate-800">{p.name}</p>
-            <p className="mt-1 text-xs text-slate-500">{p.description}</p>
-            <p className="mt-3 text-lg font-bold text-violet-700">{p.pricePi} π</p>
-            <p className="text-xs text-slate-400">{p.durationDays} days</p>
-            {busy === p.id && <p className="mt-2 text-xs text-violet-600">Processing…</p>}
+            <p className="text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
+              {p.name}
+            </p>
+            <p className="mt-2 font-serif text-3xl font-semibold text-ink">
+              {p.pricePi} <span className="text-xl">π</span>
+            </p>
+            <p className="mt-1 text-[0.65rem] uppercase tracking-wide2 text-stone">
+              {p.durationDays} days
+            </p>
+            <div className="my-3 h-px w-8 bg-gold" />
+            <p className="text-xs leading-relaxed text-stone">{p.description}</p>
+            <p className="mt-4 text-[0.65rem] font-semibold uppercase tracking-luxe text-ink group-hover:text-gold-dark">
+              {busy === p.id ? "Processing…" : "Select →"}
+            </p>
           </button>
         ))}
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-700">{error}</p>}
     </div>
   );
 }

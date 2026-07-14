@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { placeholderStyle, typeGlyph } from "@/lib/placeholder";
+import { placeholderStyle, typeLabel } from "@/lib/placeholder";
+import { LogoMark } from "./Logo";
 
 export type ListingCardData = {
   id: string;
@@ -22,35 +23,36 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
   return (
     <Link
       href={`/listings/${listing.id}`}
-      className="group overflow-hidden rounded-xl border border-violet-100 bg-white shadow-sm transition hover:shadow-md"
+      className="group overflow-hidden border border-hairline bg-white transition-shadow hover:shadow-[0_10px_40px_-12px_rgba(21,19,14,0.25)]"
     >
       <div
-        className="relative flex h-40 items-center justify-center text-5xl"
+        className="relative flex h-44 flex-col items-center justify-center"
         style={placeholderStyle(listing.photoSeed)}
       >
-        <span>{typeGlyph(listing.type)}</span>
+        <LogoMark className="h-12 w-12 text-gold-light/40 transition group-hover:text-gold-light/70" />
+        <span className="mt-3 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-light/70">
+          {typeLabel(listing.type)}
+        </span>
         {featured && (
-          <span className="absolute left-2 top-2 rounded-full bg-amber-400 px-2 py-0.5 text-xs font-semibold text-amber-950">
-            ★ Featured
+          <span className="absolute left-3 top-3 border border-gold-light/50 bg-ink/70 px-2.5 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe text-gold-light">
+            Featured
           </span>
         )}
       </div>
-      <div className="space-y-1 p-4">
+      <div className="space-y-1.5 p-5">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-lg font-bold text-violet-700">
+          <span className="font-serif text-xl font-semibold text-ink">
             {listing.pricePi.toLocaleString()} π
           </span>
-          <span className="text-xs text-slate-500">
-            ≈ ${listing.priceUsd.toLocaleString()}
-          </span>
+          <span className="text-xs text-stone">≈ ${listing.priceUsd.toLocaleString()}</span>
         </div>
-        <p className="truncate font-medium text-slate-800 group-hover:text-violet-700">
+        <p className="truncate font-serif text-[1.05rem] font-medium text-ink-mute transition group-hover:text-gold-dark">
           {listing.title}
         </p>
-        <p className="text-sm text-slate-500">
+        <p className="text-[0.7rem] uppercase tracking-wide2 text-stone">
           {listing.city}, {listing.country}
         </p>
-        <p className="text-xs text-slate-400">
+        <p className="pt-1 text-xs text-stone/80">
           {[
             listing.bedrooms ? `${listing.bedrooms} bd` : null,
             listing.bathrooms ? `${listing.bathrooms} ba` : null,
@@ -58,7 +60,7 @@ export function ListingCard({ listing }: { listing: ListingCardData }) {
             listing.grossYieldPct ? `${listing.grossYieldPct}% yield` : null,
           ]
             .filter(Boolean)
-            .join(" · ")}
+            .join("  ·  ")}
         </p>
       </div>
     </Link>
