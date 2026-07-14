@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { currentUser } from "@/lib/session";
+import { computeListingFlags } from "@/lib/rules";
 
 // GET /api/listings?q=&country=&type=&minPrice=&maxPrice=&sort=
 export async function GET(req: Request) {
@@ -74,15 +75,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Prices must be positive numbers" }, { status: 400 });
   }
 
+  const description = String(body.description).slice(0, 5000);
+  const country = String(body.country).slice(0, 60);
+  const flags = await computeListingFlags({
+    agentId: user.id,
+    description,
+    pricePi,
+    country,
+  });
+
   const listing = await prisma.listing.create({
     data: {
       agentId: user.id,
+      status: "PENDING_REVIEW",
+      flags: JSON.stringify(flags),
       title: String(body.title).slice(0, 140),
-      description: String(body.description).slice(0, 5000),
+      description,
       type: body.type,
       pricePi,
       priceUsd,
-      country: String(body.country).slice(0, 60),
+      country,
       city: String(body.city).slice(0, 60),
       region: body.region ? String(body.region).slice(0, 60) : null,
       bedrooms: body.bedrooms ? Number(body.bedrooms) : null,

@@ -23,8 +23,7 @@ export function NewListingForm() {
       body: JSON.stringify(body),
     });
     if (res.ok) {
-      const { listing } = await res.json();
-      router.push(`/agent/promote/${listing.id}`);
+      router.push("/agent?submitted=1");
       router.refresh();
     } else {
       const data = await res.json().catch(() => ({}));
@@ -63,12 +62,13 @@ export function NewListingForm() {
         disabled={busy}
         className="bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light disabled:opacity-50"
       >
-        {busy ? "Publishing…" : "Publish Listing"}
+        {busy ? "Submitting…" : "Submit for Review"}
       </button>
       {error && <p className="text-sm text-red-700">{error}</p>}
       <p className="text-[0.65rem] leading-relaxed text-stone">
-        By publishing you confirm the information is accurate and complies with the listing
-        rules and Professional Code of Conduct.
+        New consignments are reviewed before joining the collection — typically within 48
+        hours. By submitting you confirm the information is accurate and complies with the
+        listing rules and Professional Code of Conduct.
       </p>
     </form>
   );

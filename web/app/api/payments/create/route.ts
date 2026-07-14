@@ -22,6 +22,12 @@ export async function POST(req: Request) {
   if (!listing || listing.agentId !== user.id) {
     return NextResponse.json({ error: "Listing not found" }, { status: 404 });
   }
+  if (listing.status !== "ACTIVE") {
+    return NextResponse.json(
+      { error: "Only published (approved) listings can be featured" },
+      { status: 409 }
+    );
+  }
 
   const memo = `Featured:${listing.id}:${product.durationDays}d`;
   const payment = await prisma.payment.create({

@@ -78,7 +78,7 @@ export default async function LandingPage() {
               Explore the Collection
             </Link>
             <Link
-              href="/login"
+              href="/professionals/apply"
               className="border border-gold-dark/60 px-9 py-4 text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-light transition hover:border-gold-light hover:text-paper"
             >
               For Professionals
@@ -183,7 +183,7 @@ export default async function LandingPage() {
             </li>
           </ul>
           <Link
-            href="/login"
+            href="/professionals/apply"
             className="mt-8 inline-block bg-gold px-7 py-3 text-[0.65rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
           >
             Open your Private Office
@@ -340,7 +340,7 @@ export default async function LandingPage() {
           </p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/login"
+              href="/professionals/apply"
               className="bg-gold px-9 py-4 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
             >
               Join as a Professional

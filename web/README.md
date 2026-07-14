@@ -24,35 +24,55 @@ npm run dev                # http://localhost:3000
 
 Sign in at `/login`:
 
-- **Demo agent** — dashboard, publish listings, buy featured placement
-  (demo checkout while `PI_API_KEY` is unset).
-- **Demo investor** — browse and send inquiries.
+- **Demo agent** — Private Office: publish listings (into review), buy
+  featured placement (demo checkout while `PI_API_KEY` is unset), manage
+  leads.
+- **Demo investor** — browse, save favorites, send enquiries, apply to
+  become a professional.
+- **Demo admin** — the Registry: review applications, moderate listings,
+  resolve reports, read the audit trail.
 - **Sign in with Pi** — only inside the Pi Browser; verified server-side
   against the Pi `/v2/me` endpoint.
 
-## What's implemented (Phase 1 of the PRD)
+## What's implemented
 
-- Listing search with filters (keyword, country, type, Pi price range, sort)
-  — featured listings always rank first
-- Listing detail with investor metrics (gross yield, area) and a
-  contact-agent lead form carrying the non-broker disclaimer
-- Agent dashboard: listings table, lead inbox, promote/extend actions
+**Marketplace (Phase 1)**
+
+- Landing page (marketing) at `/`, full search at `/search` with filters —
+  featured listings always rank first
+- Listing detail with investor metrics, save-to-favorites, private enquiry
+  form, and a report option
 - Featured-listing ad products (8/20/35 π for 7/14/21 days) with the full
-  Pi payment lifecycle: order → `Pi.createPayment` →
-  server approval → server completion → feature activation
-- Pi auth: client `Pi.authenticate` → server token verification → session
-  cookie (HMAC-signed)
-- Demo fallbacks for both auth and checkout so the app is testable outside
-  the Pi Browser; disable with `DEMO_LOGIN_DISABLED=1` and by setting
-  `PI_API_KEY`
+  Pi payment lifecycle: order → `Pi.createPayment` → server approval →
+  server completion → feature activation (only ACTIVE listings can be
+  featured)
+- Pi auth: client `Pi.authenticate` → server token verification →
+  HMAC-signed session cookie
 
-## Not yet implemented (Phase 2+)
+**Platform (Phase 2)**
+
+- Professional onboarding: application form (`/professionals/apply`) with
+  licence fields → admin review → approval promotes the user to AGENT with
+  a risk tier (LOW/MEDIUM/HIGH); rejection allows reapply
+- Moderation pipeline: new consignments enter `PENDING_REVIEW`, run
+  through auto-flag rules (price anomaly vs. country median, scam-phrase
+  detection, thin descriptions, new-account burst posting), and go live
+  only on admin approval; suspend/reinstate supported
+- Admin console at `/admin` ("the Registry"): platform stats, application
+  queue, listing moderation queue with flags, open reports, audit trail
+- User reports on every listing (guest or signed-in) with admin
+  resolutions that can suspend or remove the listing
+- Investor favorites (`/favorites`) and agent lead-status pipeline
+  (NEW → CONTACTED → CLOSED)
+- Every administrative decision is written to the audit log
+
+## Not yet implemented (Phase 3+)
 
 - Sponsored Agent regional subscriptions, banner ads
 - Real media uploads (placeholder artwork is generated per listing)
-- KYC onboarding flow, moderation queue, rules engine, admin console
-  (specified in `../docs/`)
 - Saved searches, alerts, ROI calculators
+- Sanctions/PEP screening integrations and re-KYC scheduling (policy
+  specified in `../docs/`)
 
 ## Payment flow reference
 

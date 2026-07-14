@@ -23,9 +23,19 @@ export function Nav() {
           <Link href="/search" className={navLink}>
             The Collection
           </Link>
+          {user && (
+            <Link href="/favorites" className={navLink}>
+              Saved
+            </Link>
+          )}
           {user?.role === "AGENT" && (
             <Link href="/agent" className={navLink}>
               Private Office
+            </Link>
+          )}
+          {user?.role === "ADMIN" && (
+            <Link href="/admin" className={navLink}>
+              Registry
             </Link>
           )}
           {user ? (

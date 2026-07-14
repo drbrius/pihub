@@ -45,7 +45,7 @@ type PiContextValue = {
   piAvailable: boolean;
   refreshUser: () => Promise<void>;
   loginWithPi: () => Promise<void>;
-  loginDemo: (role: "INVESTOR" | "AGENT") => Promise<void>;
+  loginDemo: (role: "INVESTOR" | "AGENT" | "ADMIN") => Promise<void>;
   logout: () => Promise<void>;
   /** Buys a featured slot for a listing. Resolves when the purchase is finalized. */
   purchaseFeature: (listingId: string, productId: string) => Promise<void>;
@@ -103,7 +103,7 @@ export function PiProvider({ children }: { children: React.ReactNode }) {
   }, [refreshUser]);
 
   const loginDemo = useCallback(
-    async (role: "INVESTOR" | "AGENT") => {
+    async (role: "INVESTOR" | "AGENT" | "ADMIN") => {
       await postJson("/api/auth/demo", { role });
       await refreshUser();
     },

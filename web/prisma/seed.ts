@@ -134,6 +134,12 @@ async function main() {
     create: { username: "demo_investor", role: "INVESTOR" },
   });
 
+  await prisma.user.upsert({
+    where: { username: "demo_admin" },
+    update: { role: "ADMIN" },
+    create: { username: "demo_admin", role: "ADMIN", kycStatus: "VERIFIED" },
+  });
+
   const count = await prisma.listing.count();
   if (count > 0) {
     console.log(`Skipping seed: ${count} listings already present.`);
@@ -146,6 +152,7 @@ async function main() {
       data: {
         ...data,
         agentId: agent.id,
+        status: "ACTIVE",
         photoSeed: `seed-${i}-${data.city}`,
         // Feature two listings so the homepage carousel has content out of the box.
         featuredUntil:

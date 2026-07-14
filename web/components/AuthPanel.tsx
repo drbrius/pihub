@@ -54,7 +54,7 @@ export function AuthPanel() {
         </span>
         <span className="h-px flex-1 bg-hairline" />
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-3 gap-3">
         <button
           onClick={() => run(() => loginDemo("INVESTOR"), "/search")}
           disabled={busy}
@@ -68,6 +68,13 @@ export function AuthPanel() {
           className="border border-ink/30 py-3 text-[0.7rem] font-medium uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark disabled:opacity-50"
         >
           Agent
+        </button>
+        <button
+          onClick={() => run(() => loginDemo("ADMIN"), "/admin")}
+          disabled={busy}
+          className="border border-ink/30 py-3 text-[0.7rem] font-medium uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark disabled:opacity-50"
+        >
+          Admin
         </button>
       </div>
       {error && <p className="text-sm text-red-700">{error}</p>}

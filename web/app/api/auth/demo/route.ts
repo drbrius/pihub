@@ -10,15 +10,21 @@ export async function POST(req: Request) {
   }
 
   const { role } = await req.json();
-  if (role !== "INVESTOR" && role !== "AGENT") {
-    return NextResponse.json({ error: "role must be INVESTOR or AGENT" }, { status: 400 });
+  if (!["INVESTOR", "AGENT", "ADMIN"].includes(role)) {
+    return NextResponse.json({ error: "role must be INVESTOR, AGENT, or ADMIN" }, { status: 400 });
   }
 
-  const username = role === "AGENT" ? "demo_agent" : "demo_investor";
+  const username =
+    role === "AGENT" ? "demo_agent" : role === "ADMIN" ? "demo_admin" : "demo_investor";
   const user = await prisma.user.upsert({
     where: { username },
     update: {},
-    create: { username, role, kycStatus: role === "AGENT" ? "VERIFIED" : "NONE" },
+    create: {
+      username,
+      role,
+      kycStatus: role === "INVESTOR" ? "NONE" : "VERIFIED",
+      riskTier: role === "AGENT" ? "LOW" : null,
+    },
   });
 
   await setSession(user.id);

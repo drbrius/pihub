@@ -8,22 +8,47 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  piUid     String?   @unique // Pi Network user id from Pi.authenticate
-  username  String    @unique
-  role      String    @default("INVESTOR") // INVESTOR | AGENT | ADMIN
-  kycStatus String    @default("NONE") // NONE | PENDING | VERIFIED
-  createdAt DateTime  @default(now())
-  listings  Listing[]
-  payments  Payment[]
-  leads     Lead[]    @relation("AgentLeads")
+  id          String                   @id @default(cuid())
+  piUid       String?                  @unique // Pi Network user id from Pi.authenticate
+  username    String                   @unique
+  role        String                   @default("INVESTOR") // INVESTOR | AGENT | ADMIN
+  kycStatus   String                   @default("NONE") // NONE | PENDING | VERIFIED | REJECTED
+  riskTier    String? // LOW | MEDIUM | HIGH — set on professional approval
+  createdAt   DateTime                 @default(now())
+  listings    Listing[]
+  payments    Payment[]
+  leads       Lead[]                   @relation("AgentLeads")
+  application ProfessionalApplication?
+  favorites   Favorite[]
+  reports     Report[]
+  auditEvents AuditLog[]
+}
+
+model ProfessionalApplication {
+  id               String    @id @default(cuid())
+  user             User      @relation(fields: [userId], references: [id])
+  userId           String    @unique
+  fullName         String
+  companyName      String?
+  licenseNumber    String?
+  licenseAuthority String?
+  country          String
+  regions          String // free-text list of regions served
+  bio              String?
+  status           String    @default("PENDING") // PENDING | APPROVED | REJECTED | INFO_REQUESTED
+  riskTier         String? // assigned on approval
+  reviewNotes      String?
+  createdAt        DateTime  @default(now())
+  decidedAt        DateTime?
 }
 
 model Listing {
   id            String    @id @default(cuid())
   agent         User      @relation(fields: [agentId], references: [id])
   agentId       String
-  status        String    @default("ACTIVE") // PENDING_REVIEW | ACTIVE | SUSPENDED | SOLD
+  status        String    @default("PENDING_REVIEW") // PENDING_REVIEW | ACTIVE | REJECTED | SUSPENDED | SOLD
+  flags         String    @default("[]") // JSON array of auto-flag codes for moderators
+  moderationNote String?
   type          String // RESIDENTIAL | COMMERCIAL | LAND
   title         String
   description   String
@@ -41,6 +66,8 @@ model Listing {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   leads         Lead[]
+  favorites     Favorite[]
+  reports       Report[]
 }
 
 model Lead {
@@ -54,6 +81,42 @@ model Lead {
   message   String
   status    String   @default("NEW") // NEW | CONTACTED | CLOSED
   createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  listingId String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
+}
+
+model Report {
+  id         String    @id @default(cuid())
+  listing    Listing   @relation(fields: [listingId], references: [id])
+  listingId  String
+  reporter   User?     @relation(fields: [reporterId], references: [id])
+  reporterId String?
+  reason     String // MISLEADING | FRAUD | ILLEGAL | OFFENSIVE | OTHER
+  message    String?
+  status     String    @default("OPEN") // OPEN | RESOLVED
+  resolution String? // NO_ACTION | LISTING_SUSPENDED | LISTING_REMOVED | WARNING_SENT
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actor      User     @relation(fields: [actorId], references: [id])
+  actorId    String
+  action     String // e.g. APPLICATION_APPROVED, LISTING_REJECTED, REPORT_RESOLVED
+  targetType String // APPLICATION | LISTING | REPORT | USER | PAYMENT
+  targetId   String
+  notes      String?
+  createdAt  DateTime @default(now())
 }
 
 model Payment {

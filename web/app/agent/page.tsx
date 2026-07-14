@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { currentUser } from "@/lib/session";
+import { LeadStatus } from "@/components/LeadStatus";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,7 @@ export default async function AgentDashboard() {
                 <tr>
                   <th className="px-5 py-3.5">Property</th>
                   <th className="px-5 py-3.5">Price</th>
+                  <th className="px-5 py-3.5">Status</th>
                   <th className="px-5 py-3.5">Enquiries</th>
                   <th className="px-5 py-3.5">Placement</th>
                   <th className="px-5 py-3.5"></th>
@@ -83,6 +85,12 @@ export default async function AgentDashboard() {
               <tbody>
                 {listings.map((l) => {
                   const featured = l.featuredUntil && l.featuredUntil.getTime() > now;
+                  const statusTone =
+                    l.status === "ACTIVE"
+                      ? "border-gold-dark/50 text-gold-dark"
+                      : l.status === "PENDING_REVIEW"
+                        ? "border-ink/40 text-ink"
+                        : "border-red-300 text-red-800";
                   return (
                     <tr key={l.id} className="border-t border-hairline/60">
                       <td className="px-5 py-4">
@@ -99,6 +107,13 @@ export default async function AgentDashboard() {
                       <td className="px-5 py-4 font-serif font-semibold">
                         {l.pricePi.toLocaleString()} π
                       </td>
+                      <td className="px-5 py-4">
+                        <span
+                          className={`border px-2 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe ${statusTone}`}
+                        >
+                          {l.status === "PENDING_REVIEW" ? "In review" : l.status.toLowerCase()}
+                        </span>
+                      </td>
                       <td className="px-5 py-4">{l._count.leads}</td>
                       <td className="px-5 py-4">
                         {featured ? (
@@ -110,12 +125,18 @@ export default async function AgentDashboard() {
                         )}
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <Link
-                          href={`/agent/promote/${l.id}`}
-                          className="border border-ink/30 px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark"
-                        >
-                          {featured ? "Extend" : "Promote"}
-                        </Link>
+                        {l.status === "ACTIVE" ? (
+                          <Link
+                            href={`/agent/promote/${l.id}`}
+                            className="border border-ink/30 px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark"
+                          >
+                            {featured ? "Extend" : "Promote"}
+                          </Link>
+                        ) : (
+                          <span className="text-[0.6rem] uppercase tracking-wide2 text-stone/60">
+                            {l.status === "PENDING_REVIEW" ? "Awaiting approval" : ""}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   );
@@ -149,6 +170,9 @@ export default async function AgentDashboard() {
                   </p>
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-ink-mute">{lead.message}</p>
+                <div className="mt-3">
+                  <LeadStatus leadId={lead.id} status={lead.status} />
+                </div>
               </div>
             ))}
           </div>
