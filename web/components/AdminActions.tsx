@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const btn =
-  "border px-3.5 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 transition disabled:opacity-40";
+  "rounded-full border px-3.5 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 transition disabled:opacity-40";
 
 async function post(url: string, body: unknown) {
   const res = await fetch(url, {
@@ -48,7 +48,7 @@ export function ApplicationActions({ applicationId }: { applicationId: string })
         <select
           value={tier}
           onChange={(e) => setTier(e.target.value)}
-          className="border border-hairline bg-white px-2.5 py-2 text-xs"
+          className="rounded-lg rounded-lg border border-hairline bg-white px-2.5 py-2 text-xs"
         >
           <option value="LOW">Risk: Low</option>
           <option value="MEDIUM">Risk: Medium</option>
@@ -58,7 +58,7 @@ export function ApplicationActions({ applicationId }: { applicationId: string })
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Review notes (optional)"
-          className="min-w-48 flex-1 border border-hairline bg-white px-2.5 py-2 text-xs"
+          className="min-w-48 flex-1 rounded-lg rounded-lg border border-hairline bg-white px-2.5 py-2 text-xs"
         />
         <button
           disabled={busy}
@@ -145,7 +145,7 @@ export function ReportActions({ reportId }: { reportId: string }) {
         <select
           value={resolution}
           onChange={(e) => setResolution(e.target.value)}
-          className="border border-hairline bg-white px-2.5 py-2 text-xs"
+          className="rounded-lg rounded-lg border border-hairline bg-white px-2.5 py-2 text-xs"
         >
           <option value="NO_ACTION">No action</option>
           <option value="WARNING_SENT">Warning sent</option>

@@ -36,7 +36,7 @@ export function LeadStatus({ leadId, status }: { leadId: string; status: string 
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className={`border px-2.5 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe ${tone}`}>
+      <span className={`rounded-full rounded-full border px-2.5 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe ${tone}`}>
         {status}
       </span>
       {(NEXT[status] ?? []).map((n) => (

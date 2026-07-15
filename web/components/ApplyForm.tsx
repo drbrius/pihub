@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const input =
-  "w-full border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
+  "w-full rounded-xl border border-hairline bg-white px-4 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
 
 export function ApplyForm() {
   const router = useRouter();
@@ -34,8 +34,8 @@ export function ApplyForm() {
 
   if (sent) {
     return (
-      <div className="border border-gold-dark/40 bg-ivory p-6 text-center">
-        <p className="font-serif text-xl font-semibold text-ink">Application received.</p>
+      <div className="rounded-2xl border border-gold-dark/40 bg-ivory p-6 text-center">
+        <p className="text-lg font-bold tracking-tight text-ink">Application received.</p>
         <p className="mt-2 text-sm text-stone">
           Our team will review your credentials. You&apos;ll see the outcome here and gain
           access to your Private Office upon approval.
@@ -62,7 +62,7 @@ export function ApplyForm() {
       />
       <button
         disabled={busy}
-        className="w-full bg-gold py-3.5 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light disabled:opacity-50"
+        className="w-full rounded-full bg-gold py-3.5 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light disabled:opacity-50"
       >
         {busy ? "Submitting…" : "Submit for Review"}
       </button>

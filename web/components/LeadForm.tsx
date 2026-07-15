@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 const input =
-  "w-full border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
+  "w-full rounded-xl border border-hairline bg-white px-4 py-2.5 text-sm text-ink placeholder:text-stone/70 focus:border-gold focus:outline-none";
 
 export function LeadForm({ listingId }: { listingId: string }) {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -33,8 +33,8 @@ export function LeadForm({ listingId }: { listingId: string }) {
 
   if (state === "sent") {
     return (
-      <div className="border border-gold-dark/40 bg-ivory p-4 text-sm text-ink">
-        <p className="font-serif text-lg font-semibold">Enquiry received.</p>
+      <div className="rounded-2xl border border-gold-dark/40 bg-ivory p-4 text-sm text-ink">
+        <p className="text-base font-bold">Enquiry received.</p>
         <p className="mt-1 text-stone">The presenting agent will contact you directly.</p>
       </div>
     );
@@ -58,7 +58,7 @@ export function LeadForm({ listingId }: { listingId: string }) {
       />
       <button
         disabled={state === "sending"}
-        className="w-full bg-ink py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-light transition hover:bg-ink-soft disabled:opacity-50"
+        className="w-full rounded-full bg-ink py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-gold-light transition hover:bg-ink-soft disabled:opacity-50"
       >
         {state === "sending" ? "Sending…" : "Submit Enquiry"}
       </button>

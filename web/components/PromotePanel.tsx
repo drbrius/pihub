@@ -34,8 +34,8 @@ export function PromotePanel({
 
   if (done) {
     return (
-      <div className="border border-gold-dark/40 bg-ivory p-6">
-        <p className="font-serif text-xl font-semibold text-ink">Placement confirmed.</p>
+      <div className="rounded-2xl border border-gold-dark/40 bg-ivory p-6">
+        <p className="text-lg font-bold tracking-tight text-ink">Placement confirmed.</p>
         <p className="mt-1 text-sm text-stone">
           Your property now leads the collection in search results.
         </p>
@@ -46,7 +46,7 @@ export function PromotePanel({
   return (
     <div className="space-y-4">
       {!piAvailable && (
-        <p className="border border-gold-dark/30 bg-ivory p-3.5 text-[0.7rem] leading-relaxed text-ink-mute">
+        <p className="rounded-xl border border-gold-dark/30 bg-ivory p-3.5 text-[0.7rem] leading-relaxed text-ink-mute">
           You&apos;re outside the Pi Browser — purchases run in demo mode (no Pi is
           transferred). Open the app in the Pi Browser for real Pi payments.
         </p>
@@ -62,7 +62,7 @@ export function PromotePanel({
             <p className="text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
               {p.name}
             </p>
-            <p className="mt-2 font-serif text-3xl font-semibold text-ink">
+            <p className="mt-2 text-3xl font-bold tracking-tight text-ink">
               {p.pricePi} <span className="text-xl">π</span>
             </p>
             <p className="mt-1 text-[0.65rem] uppercase tracking-wide2 text-stone">

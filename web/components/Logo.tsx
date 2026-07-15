@@ -22,16 +22,14 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Wordmark({ dark = false }: { dark?: boolean }) {
   return (
-    <span className="flex flex-col leading-none">
+    <span className="flex items-baseline gap-1.5 leading-none">
       <span
-        className={`font-serif text-[1.35rem] font-medium tracking-wide2 ${
-          dark ? "text-paper" : "text-ink"
-        }`}
+        className={`text-lg font-bold tracking-tight ${dark ? "text-paper" : "text-ink"}`}
       >
-        HOMEPI
+        HomePi
       </span>
-      <span className="mt-1 text-[0.55rem] font-medium uppercase tracking-luxe text-gold">
-        Hub&ensp;·&ensp;Fine Property
+      <span className="rounded-full bg-gold/15 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-luxe text-gold">
+        Hub
       </span>
     </span>
   );

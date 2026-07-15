@@ -13,7 +13,7 @@ type Search = {
 };
 
 const input =
-  "border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink focus:border-gold focus:outline-none";
+  "rounded-xl border border-hairline bg-white px-4 py-2.5 text-sm text-ink focus:border-gold focus:outline-none";
 
 export default async function SearchPage({ searchParams }: { searchParams: Search }) {
   const { q, country, type, minPrice, maxPrice, sort } = searchParams;
@@ -75,11 +75,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
         <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
           The Collection
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">Browse Properties</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink">Browse Properties</h1>
         <div className="mt-3 h-px w-16 bg-gold" />
       </div>
 
-      <form className="flex flex-wrap items-end gap-3 border border-hairline bg-white p-5">
+      <form className="flex flex-wrap items-end gap-3 rounded-2xl border border-hairline bg-white shadow-soft p-5">
         <input name="q" defaultValue={q} placeholder="Keyword or city" className={input} />
         <select name="country" defaultValue={country ?? ""} className={input}>
           <option value="">All countries</option>
@@ -108,7 +108,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
       </form>
 
       {listings.length === 0 ? (
-        <p className="py-16 text-center font-serif text-lg italic text-stone">
+        <p className="py-16 text-center text-sm text-stone">
           No properties match those criteria yet.
         </p>
       ) : (

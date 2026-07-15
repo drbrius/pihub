@@ -48,7 +48,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
   return (
     <div className="space-y-6">
       {listing.status !== "ACTIVE" && (
-        <p className="border border-gold-dark/40 bg-ivory px-5 py-3 text-center text-[0.7rem] uppercase tracking-wide2 text-ink">
+        <p className="rounded-2xl border border-gold-dark/40 bg-ivory px-5 py-3 text-center text-[0.7rem] font-semibold uppercase tracking-wide2 text-ink">
           {STATUS_BANNERS[listing.status] ?? `Status: ${listing.status}`}
         </p>
       )}
@@ -56,16 +56,16 @@ export default async function ListingPage({ params }: { params: { id: string } }
       <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
         <div className="space-y-8">
           <div
-            className="relative flex h-80 flex-col items-center justify-center"
+            className="relative flex h-80 flex-col items-center justify-center overflow-hidden rounded-3xl shadow-lift"
             style={placeholderStyle(listing.photoSeed)}
           >
             <LogoMark className="h-20 w-20 text-gold-light/40" />
-            <span className="mt-4 text-[0.65rem] font-medium uppercase tracking-luxe text-gold-light/70">
+            <span className="mt-4 rounded-full bg-black/25 px-3.5 py-1.5 text-[0.65rem] font-semibold uppercase tracking-luxe text-gold-light/90 backdrop-blur-sm">
               {typeLabel(listing.type)}
             </span>
             {featured && (
-              <span className="absolute left-5 top-5 border border-gold-light/50 bg-ink/70 px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-luxe text-gold-light">
-                Featured
+              <span className="absolute left-5 top-5 rounded-full bg-gradient-to-r from-gold-light to-gold px-3.5 py-1.5 text-[0.6rem] font-bold uppercase tracking-wide2 text-ink shadow-glow">
+                ★ Featured
               </span>
             )}
           </div>
@@ -75,11 +75,11 @@ export default async function ListingPage({ params }: { params: { id: string } }
               {[listing.region, listing.city, listing.country].filter(Boolean).join("  ·  ")}
             </p>
             <div className="mt-2 flex flex-wrap items-baseline justify-between gap-3">
-              <h1 className="max-w-xl font-serif text-4xl font-medium leading-tight text-ink">
+              <h1 className="max-w-xl text-4xl font-bold tracking-tight leading-tight text-ink">
                 {listing.title}
               </h1>
               <div className="text-right">
-                <p className="font-serif text-3xl font-semibold text-gold-dark">
+                <p className="text-3xl font-bold tracking-tight text-gold-dark">
                   {listing.pricePi.toLocaleString()} π
                 </p>
                 <p className="mt-1 text-xs text-stone">≈ ${listing.priceUsd.toLocaleString()}</p>
@@ -89,18 +89,20 @@ export default async function ListingPage({ params }: { params: { id: string } }
           </div>
 
           <div
-            className="grid gap-px border border-hairline bg-hairline"
+            className="grid gap-3"
             style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}
           >
             {facts.map(([label, value]) => (
-              <div key={label} className="bg-white p-4">
-                <p className="text-[0.6rem] uppercase tracking-luxe text-stone">{label}</p>
-                <p className="mt-1 font-serif text-lg font-semibold text-ink">{value}</p>
+              <div key={label} className="rounded-2xl border border-hairline bg-white p-4 shadow-soft">
+                <p className="text-[0.6rem] font-semibold uppercase tracking-luxe text-stone">
+                  {label}
+                </p>
+                <p className="mt-1 text-base font-bold text-ink">{value}</p>
               </div>
             ))}
           </div>
 
-          <div className="border border-hairline bg-white p-8">
+          <div className="rounded-2xl border border-hairline bg-white shadow-soft p-8">
             <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
               The Property
             </p>
@@ -112,13 +114,13 @@ export default async function ListingPage({ params }: { params: { id: string } }
         </div>
 
         <aside className="space-y-5">
-          <div className="border border-hairline bg-white p-6">
+          <div className="rounded-2xl border border-hairline bg-white shadow-soft p-6">
             <p className="text-[0.6rem] uppercase tracking-luxe text-stone">Presented by</p>
-            <p className="mt-2 font-serif text-xl font-semibold text-ink">
+            <p className="mt-2 text-lg font-bold tracking-tight text-ink">
               {listing.agent.username}
             </p>
             {listing.agent.kycStatus === "VERIFIED" && (
-              <p className="mt-2 inline-block border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
+              <p className="mt-2 inline-block rounded-full border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
                 ✓ Verified Professional
               </p>
             )}
@@ -130,7 +132,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
             signedIn={Boolean(viewer)}
           />
 
-          <div className="border border-hairline bg-white p-6">
+          <div className="rounded-2xl border border-hairline bg-white shadow-soft p-6">
             <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
               Private Enquiry
             </p>

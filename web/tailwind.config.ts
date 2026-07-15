@@ -29,8 +29,13 @@ const config: Config = {
         sans: ["var(--font-geist-sans)", "Helvetica Neue", "Arial", "sans-serif"],
       },
       letterSpacing: {
-        luxe: "0.28em",
-        wide2: "0.16em",
+        luxe: "0.14em",
+        wide2: "0.08em",
+      },
+      boxShadow: {
+        soft: "0 1px 2px rgba(21,19,14,0.04), 0 8px 24px -12px rgba(21,19,14,0.12)",
+        lift: "0 2px 4px rgba(21,19,14,0.05), 0 20px 40px -16px rgba(21,19,14,0.22)",
+        glow: "0 8px 32px -8px rgba(179,144,63,0.45)",
       },
     },
   },

@@ -12,7 +12,7 @@ export default async function PromotePage({ params }: { params: { id: string } }
   if (!user || user.role !== "AGENT") {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <p className="font-serif text-lg italic text-stone">
+        <p className="text-sm text-stone">
           Sign in with an agent account to promote listings.
         </p>
         <Link
@@ -36,7 +36,7 @@ export default async function PromotePage({ params }: { params: { id: string } }
         <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
           Placement
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink">
           Promote &ldquo;{listing.title}&rdquo;
         </h1>
         <div className="mt-3 h-px w-16 bg-gold" />

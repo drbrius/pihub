@@ -10,14 +10,14 @@ export default async function AgentDashboard() {
   if (!user || user.role !== "AGENT") {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <h1 className="font-serif text-3xl font-medium text-ink">Private Office</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-ink">Private Office</h1>
         <div className="mx-auto mt-3 h-px w-14 bg-gold" />
         <p className="mt-4 text-sm text-stone">
           Sign in with an agent account to manage listings, enquiries, and placement.
         </p>
         <Link
           href="/login"
-          className="mt-6 inline-block bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
+          className="mt-6 inline-block rounded-full bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
         >
           Sign in
         </Link>
@@ -48,7 +48,7 @@ export default async function AgentDashboard() {
           <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
             Private Office
           </p>
-          <h1 className="mt-1 font-serif text-3xl font-medium text-ink">{user.username}</h1>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink">{user.username}</h1>
           <div className="mt-3 h-px w-16 bg-gold" />
           <p className="mt-3 text-[0.7rem] uppercase tracking-wide2 text-stone">
             {listings.length} listing{listings.length === 1 ? "" : "s"} · {leads.length}{" "}
@@ -57,20 +57,20 @@ export default async function AgentDashboard() {
         </div>
         <Link
           href="/agent/new"
-          className="bg-gold px-7 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
+          className="rounded-full bg-gold px-7 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
         >
           + New Listing
         </Link>
       </div>
 
       <section>
-        <h2 className="mb-4 font-serif text-2xl font-medium text-ink">Portfolio</h2>
+        <h2 className="mb-4 text-2xl font-bold tracking-tight text-ink">Portfolio</h2>
         {listings.length === 0 ? (
-          <p className="border border-dashed border-gold-dark/40 bg-white p-10 text-center font-serif text-lg italic text-stone">
+          <p className="rounded-2xl border border-dashed border-gold-dark/40 bg-white p-10 text-center text-sm text-stone">
             No listings yet — consign your first property to begin receiving enquiries.
           </p>
         ) : (
-          <div className="overflow-x-auto border border-hairline bg-white">
+          <div className="overflow-x-auto rounded-2xl border border-hairline bg-white shadow-soft">
             <table className="w-full text-sm">
               <thead className="border-b border-hairline bg-ivory text-left text-[0.6rem] uppercase tracking-luxe text-stone">
                 <tr>
@@ -96,7 +96,7 @@ export default async function AgentDashboard() {
                       <td className="px-5 py-4">
                         <Link
                           href={`/listings/${l.id}`}
-                          className="font-serif text-base font-medium text-ink transition hover:text-gold-dark"
+                          className="text-sm font-semibold text-ink transition hover:text-gold-dark"
                         >
                           {l.title}
                         </Link>
@@ -104,12 +104,12 @@ export default async function AgentDashboard() {
                           {l.city}, {l.country}
                         </p>
                       </td>
-                      <td className="px-5 py-4 font-serif font-semibold">
+                      <td className="px-5 py-4 font-bold">
                         {l.pricePi.toLocaleString()} π
                       </td>
                       <td className="px-5 py-4">
                         <span
-                          className={`border px-2 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe ${statusTone}`}
+                          className={`rounded-full border px-2 py-1 text-[0.55rem] font-semibold uppercase tracking-luxe ${statusTone}`}
                         >
                           {l.status === "PENDING_REVIEW" ? "In review" : l.status.toLowerCase()}
                         </span>
@@ -117,7 +117,7 @@ export default async function AgentDashboard() {
                       <td className="px-5 py-4">{l._count.leads}</td>
                       <td className="px-5 py-4">
                         {featured ? (
-                          <span className="border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
+                          <span className="rounded-full border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
                             Featured until {l.featuredUntil!.toLocaleDateString()}
                           </span>
                         ) : (
@@ -128,7 +128,7 @@ export default async function AgentDashboard() {
                         {l.status === "ACTIVE" ? (
                           <Link
                             href={`/agent/promote/${l.id}`}
-                            className="border border-ink/30 px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark"
+                            className="rounded-full border border-ink/30 px-4 py-2 text-[0.6rem] font-semibold uppercase tracking-wide2 text-ink transition hover:border-gold-dark hover:text-gold-dark"
                           >
                             {featured ? "Extend" : "Promote"}
                           </Link>
@@ -148,18 +148,18 @@ export default async function AgentDashboard() {
       </section>
 
       <section>
-        <h2 className="mb-4 font-serif text-2xl font-medium text-ink">Enquiries</h2>
+        <h2 className="mb-4 text-2xl font-bold tracking-tight text-ink">Enquiries</h2>
         {leads.length === 0 ? (
-          <p className="border border-dashed border-gold-dark/40 bg-white p-10 text-center font-serif text-lg italic text-stone">
+          <p className="rounded-2xl border border-dashed border-gold-dark/40 bg-white p-10 text-center text-sm text-stone">
             No enquiries yet. Featured properties lead the collection and typically convert
             more interest.
           </p>
         ) : (
           <div className="space-y-3">
             {leads.map((lead) => (
-              <div key={lead.id} className="border border-hairline bg-white p-5">
+              <div key={lead.id} className="rounded-2xl border border-hairline bg-white shadow-soft p-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="font-serif text-base font-semibold text-ink">
+                  <p className="text-sm font-bold text-ink">
                     {lead.name}
                     <span className="ml-3 font-sans text-xs font-normal text-gold-dark">
                       {lead.contact}

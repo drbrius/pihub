@@ -6,22 +6,22 @@ import { usePi } from "./PiProvider";
 import { LogoMark, Wordmark } from "./Logo";
 
 const navLink =
-  "text-[0.7rem] font-medium uppercase tracking-luxe text-ivory/70 transition hover:text-gold-light";
+  "rounded-full px-3.5 py-2 text-xs font-medium text-ivory/70 transition hover:bg-white/5 hover:text-gold-light";
 
 export function Nav() {
   const { user, logout } = usePi();
   const router = useRouter();
 
   return (
-    <header className="sticky top-0 z-20 border-b border-gold-dark/40 bg-ink/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="flex items-center gap-3">
-          <LogoMark className="h-11 w-11 text-gold-light" />
+    <header className="sticky top-0 z-20 border-b border-white/5 bg-ink/85 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2.5">
+          <LogoMark className="h-9 w-9 text-gold-light" />
           <Wordmark dark />
         </Link>
-        <nav className="flex items-center gap-7">
+        <nav className="flex items-center gap-1.5">
           <Link href="/search" className={navLink}>
-            The Collection
+            Collection
           </Link>
           {user && (
             <Link href="/favorites" className={navLink}>
@@ -45,14 +45,14 @@ export function Nav() {
                 router.push("/");
                 router.refresh();
               }}
-              className="border border-gold-dark/60 px-4 py-2 text-[0.7rem] font-medium uppercase tracking-wide2 text-gold-light transition hover:border-gold-light hover:text-paper"
+              className="ml-2 rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-ivory/80 transition hover:border-gold-light/60 hover:text-gold-light"
             >
               {user.username} · Sign out
             </button>
           ) : (
             <Link
               href="/login"
-              className="bg-gold px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-wide2 text-ink transition hover:bg-gold-light"
+              className="ml-2 rounded-full bg-gradient-to-r from-gold-light to-gold px-5 py-2 text-xs font-semibold text-ink shadow-glow transition hover:brightness-110"
             >
               Sign in
             </Link>

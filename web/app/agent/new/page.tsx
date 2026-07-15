@@ -9,7 +9,7 @@ export default async function NewListingPage() {
   if (!user || user.role !== "AGENT") {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <p className="font-serif text-lg italic text-stone">
+        <p className="text-sm text-stone">
           An agent account is required to consign listings.
         </p>
         <Link
@@ -28,14 +28,14 @@ export default async function NewListingPage() {
         <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
           Private Office
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">Consign a Property</h1>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink">Consign a Property</h1>
         <div className="mt-3 h-px w-16 bg-gold" />
         <p className="mt-3 text-sm text-stone">
           Listings are complimentary. After publishing you may acquire featured placement in
           Pi.
         </p>
       </div>
-      <div className="border border-hairline bg-white p-8">
+      <div className="rounded-2xl border border-hairline bg-white shadow-soft p-8">
         <NewListingForm />
       </div>
     </div>

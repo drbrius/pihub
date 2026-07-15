@@ -13,14 +13,14 @@ export default async function ApplyPage() {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
         <LogoMark className="mx-auto h-14 w-14 text-gold" />
-        <h1 className="mt-5 font-serif text-3xl font-medium text-ink">Join as a Professional</h1>
+        <h1 className="mt-5 text-3xl font-bold tracking-tight text-ink">Join as a Professional</h1>
         <div className="mx-auto mt-3 h-px w-14 bg-gold" />
         <p className="mt-4 text-sm leading-relaxed text-stone">
           Sign in first — then submit your credentials for review.
         </p>
         <Link
           href="/login"
-          className="mt-6 inline-block bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink hover:bg-gold-light"
+          className="mt-6 inline-block rounded-full bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink hover:bg-gold-light"
         >
           Sign in
         </Link>
@@ -31,12 +31,12 @@ export default async function ApplyPage() {
   if (user.role === "AGENT") {
     return (
       <div className="mx-auto max-w-md py-20 text-center">
-        <h1 className="font-serif text-3xl font-medium text-ink">You&apos;re already in.</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-ink">You&apos;re already in.</h1>
         <div className="mx-auto mt-3 h-px w-14 bg-gold" />
         <p className="mt-4 text-sm text-stone">Your professional account is active.</p>
         <Link
           href="/agent"
-          className="mt-6 inline-block bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink hover:bg-gold-light"
+          className="mt-6 inline-block rounded-full bg-gold px-8 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink hover:bg-gold-light"
         >
           Open your Private Office
         </Link>
@@ -54,7 +54,7 @@ export default async function ApplyPage() {
         <p className="text-[0.65rem] font-medium uppercase tracking-luxe text-gold-dark">
           The Founding Season
         </p>
-        <h1 className="mt-1 font-serif text-3xl font-medium text-ink">
+        <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink">
           Apply for a Professional Account
         </h1>
         <div className="mx-auto mt-3 h-px w-16 bg-gold" />
@@ -65,8 +65,8 @@ export default async function ApplyPage() {
       </div>
 
       {application?.status === "PENDING" ? (
-        <div className="border border-gold-dark/40 bg-ivory p-8 text-center">
-          <p className="font-serif text-xl font-semibold text-ink">Under review.</p>
+        <div className="rounded-2xl border border-gold-dark/40 bg-ivory p-8 text-center">
+          <p className="text-lg font-bold tracking-tight text-ink">Under review.</p>
           <p className="mt-2 text-sm text-stone">
             Your application from {application.createdAt.toLocaleDateString()} is with our
             team. You&apos;ll gain access to your Private Office upon approval.
@@ -74,8 +74,8 @@ export default async function ApplyPage() {
         </div>
       ) : application?.status === "REJECTED" ? (
         <div className="space-y-6">
-          <div className="border border-red-200 bg-red-50 p-6 text-center">
-            <p className="font-serif text-lg font-semibold text-red-900">
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+            <p className="text-base font-bold text-red-900">
               Your previous application was declined.
             </p>
             {application.reviewNotes && (
@@ -85,12 +85,12 @@ export default async function ApplyPage() {
               You may reapply below with corrected or additional information.
             </p>
           </div>
-          <div className="border border-hairline bg-white p-8">
+          <div className="rounded-2xl border border-hairline bg-white shadow-soft p-8">
             <ApplyForm />
           </div>
         </div>
       ) : (
-        <div className="border border-hairline bg-white p-8">
+        <div className="rounded-2xl border border-hairline bg-white shadow-soft p-8">
           <ApplyForm />
         </div>
       )}
