@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HomePi Hub — Fine Property, Powered by Pi</title>
+  <meta name="description" content="A global collection of residences, commercial assets, and land — free for investors, presented by verified professionals, with placement settled purely in Pi.">
+</head>
+<body>
+<style>
+  :root {
+    --bg: #fbf9f4;
+    --card: #ffffff;
+    --text: #15130e;
+    --muted: #767059;
+    --line: #e8e1cf;
+    --chip-bg: rgba(179, 144, 63, 0.10);
+    --chip-line: rgba(179, 144, 63, 0.30);
+    --gold: #b3903f;
+    --gold-light: #d9bd6e;
+    --gold-dark: #8a6d2c;
+    --gold-text: #8a6d2c;
+    --ink: #15130e;
+    --ink-soft: #211e17;
+    --on-ink: #f4efe4;
+    --on-ink-muted: rgba(244, 239, 228, 0.62);
+    --shadow-soft: 0 1px 2px rgba(21, 19, 14, 0.04), 0 8px 24px -12px rgba(21, 19, 14, 0.12);
+    --shadow-lift: 0 2px 4px rgba(21, 19, 14, 0.05), 0 20px 40px -16px rgba(21, 19, 14, 0.22);
+    --shadow-glow: 0 8px 32px -8px rgba(179, 144, 63, 0.45);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #100e0b;
+      --card: #1b1813;
+      --text: #f4efe4;
+      --muted: #a89f87;
+      --line: #2d2920;
+      --chip-bg: rgba(217, 189, 110, 0.10);
+      --chip-line: rgba(217, 189, 110, 0.28);
+      --gold-text: #d9bd6e;
+      --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+      --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 20px 40px -16px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #fbf9f4;
+    --card: #ffffff;
+    --text: #15130e;
+    --muted: #767059;
+    --line: #e8e1cf;
+    --chip-bg: rgba(179, 144, 63, 0.10);
+    --chip-line: rgba(179, 144, 63, 0.30);
+    --gold-text: #8a6d2c;
+    --shadow-soft: 0 1px 2px rgba(21, 19, 14, 0.04), 0 8px 24px -12px rgba(21, 19, 14, 0.12);
+    --shadow-lift: 0 2px 4px rgba(21, 19, 14, 0.05), 0 20px 40px -16px rgba(21, 19, 14, 0.22);
+  }
+  :root[data-theme="dark"] {
+    --bg: #100e0b;
+    --card: #1b1813;
+    --text: #f4efe4;
+    --muted: #a89f87;
+    --line: #2d2920;
+    --chip-bg: rgba(217, 189, 110, 0.10);
+    --chip-line: rgba(217, 189, 110, 0.28);
+    --gold-text: #d9bd6e;
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 20px 40px -16px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+
+  /* ── shared atoms ─────────────────────────────────────────── */
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--chip-line); background: var(--chip-bg);
+    border-radius: 999px; padding: 6px 14px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold-text);
+  }
+  .chip .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--gold); }
+  .chip--onink { border-color: rgba(217,189,110,.25); background: rgba(255,255,255,.05); color: var(--gold-light); }
+  .chip--onink .dot { background: var(--gold-light); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .btn {
+    display: inline-block; border-radius: 999px; padding: 14px 30px;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    transition: filter .2s, border-color .2s, color .2s;
+  }
+  .btn-gold {
+    background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    color: #15130e; box-shadow: var(--shadow-glow);
+  }
+  .btn-gold:hover { filter: brightness(1.08); }
+  .btn-ghost-dark {
+    border: 1px solid rgba(255,255,255,.2); color: rgba(244,239,228,.9);
+  }
+  .btn-ghost-dark:hover { border-color: rgba(217,189,110,.7); color: var(--gold-light); }
+  .btn-ink { background: var(--ink); color: var(--gold-light); box-shadow: var(--shadow-soft); }
+  .btn-ink:hover { filter: brightness(1.2); }
+
+  h1, h2, h3 { margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+  .kicker { margin-bottom: 16px; }
+  .lede { color: var(--muted); font-size: 0.95rem; max-width: 34rem; }
+  section { margin: 96px 0; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 24px; box-shadow: var(--shadow-soft);
+  }
+
+  /* ── nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(21,19,14,.88); backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; max-width: 1100px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand svg { width: 36px; height: 36px; color: var(--gold-light); }
+  .brand-name { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; color: #f4efe4; }
+  .brand-tag {
+    background: rgba(179,144,63,.18); color: var(--gold-light);
+    border-radius: 999px; padding: 2px 9px; font-size: 0.6rem;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    color: rgba(244,239,228,.7); text-decoration: none; font-size: 0.8rem;
+    font-weight: 500; padding: 8px 14px; border-radius: 999px; transition: color .2s, background .2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); background: rgba(255,255,255,.05); }
+  .nav-cta {
+    background: linear-gradient(90deg, var(--gold-light), var(--gold)) !important;
+    color: #15130e !important; font-weight: 600 !important; margin-left: 6px;
+  }
+  @media (max-width: 640px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+  /* ── hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative; overflow: hidden; border-radius: 28px;
+    background: var(--ink); color: var(--on-ink);
+    padding: 84px 56px; margin-top: 28px;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(60% 80% at 85% 10%, rgba(179,144,63,.25) 0%, transparent 60%),
+      radial-gradient(50% 70% at 5% 95%, rgba(63,56,42,.6) 0%, transparent 65%);
+  }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .hero h1 {
+    margin-top: 24px; font-size: clamp(2.4rem, 5.5vw, 3.9rem);
+    font-weight: 800; line-height: 1.06; color: #fbf9f4;
+  }
+  .grad {
+    background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-light));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { margin: 24px 0 0; color: var(--on-ink-muted); max-width: 30rem; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 44px; }
+  .hero-stats b { display: block; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+  .hero-stats span { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,239,228,.5); }
+  .hero-mark { position: relative; display: grid; place-items: center; }
+  .hero-mark::before {
+    content: ""; position: absolute; width: 320px; height: 320px;
+    border-radius: 999px; background: rgba(179,144,63,.12); filter: blur(60px);
+  }
+  .hero-mark svg { position: relative; width: 250px; height: 250px; color: rgba(217,189,110,.85); }
+  @media (max-width: 860px) {
+    .hero { padding: 56px 28px; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-mark { display: none; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-grid > div { animation: rise .7s ease-out both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+
+  /* ── section headers ──────────────────────────────────────── */
+  .sec-head { margin-bottom: 36px; }
+  .sec-head.center { text-align: center; }
+  .sec-head h2 { margin-top: 16px; font-size: clamp(1.7rem, 3.4vw, 2.4rem); font-weight: 800; }
+  .sec-head .lede { margin: 14px auto 0; }
+  .sec-head.center .lede { margin-left: auto; margin-right: auto; }
+
+  /* ── listing cards ────────────────────────────────────────── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .listing { overflow: hidden; text-decoration: none; transition: transform .3s, box-shadow .3s; }
+  .listing:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .listing-art {
+    position: relative; height: 168px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+  }
+  .listing-art svg { width: 46px; height: 46px; color: rgba(217,189,110,.45); }
+  .listing-art .type {
+    background: rgba(0,0,0,.25); backdrop-filter: blur(4px);
+    border-radius: 999px; padding: 4px 12px; font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgba(217,189,110,.9);
+  }
+  .listing-art .feat {
+    position: absolute; top: 12px; left: 12px;
+    background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    color: #15130e; border-radius: 999px; padding: 4px 12px;
+    font-size: 0.58rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    box-shadow: var(--shadow-glow);
+  }
+  .listing-body { padding: 18px 20px 20px; }
+  .price-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .price-row b { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .price-row span { font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .listing-body h3 { margin-top: 6px; font-size: 0.95rem; font-weight: 600; }
+  .listing-body .loc { margin: 6px 0 0; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .listing-body .meta { margin: 8px 0 0; font-size: 0.72rem; color: var(--muted); }
+
+  /* ── audiences ────────────────────────────────────────────── */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+  .pane { border-radius: 28px; padding: 40px; }
+  .pane h3 { margin-top: 16px; font-size: 1.4rem; font-weight: 800; }
+  .pane ul { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 16px; }
+  .pane li { display: flex; gap: 12px; font-size: 0.88rem; color: var(--muted); }
+  .pane li .tick {
+    flex: none; width: 24px; height: 24px; margin-top: 2px; border-radius: 999px;
+    background: var(--chip-bg); color: var(--gold-text);
+    display: grid; place-items: center; font-size: 0.7rem;
+  }
+  .pane li b { color: var(--text); }
+  .pane .btn { margin-top: 30px; font-size: 0.78rem; padding: 12px 24px; }
+  .pane--ink { position: relative; overflow: hidden; background: var(--ink); color: var(--on-ink); box-shadow: var(--shadow-lift); }
+  .pane--ink::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(70% 70% at 90% 0%, rgba(179,144,63,.22) 0%, transparent 60%);
+  }
+  .pane--ink > * { position: relative; }
+  .pane--ink li { color: var(--on-ink-muted); }
+  .pane--ink li b { color: #fbf9f4; }
+  .pane--ink h3 { color: #fbf9f4; }
+
+  /* ── pricing ──────────────────────────────────────────────── */
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; align-items: stretch; }
+  .tier { position: relative; border-radius: 28px; padding: 36px 28px; text-align: center; }
+  .tier .name { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-text); }
+  .tier .amount { margin-top: 16px; font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .tier .amount small { font-size: 1.4rem; font-weight: 700; }
+  .tier .term { margin-top: 2px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .tier .desc { margin-top: 16px; font-size: 0.78rem; color: var(--muted); }
+  .tier--featured { background: var(--ink); color: var(--on-ink); box-shadow: var(--shadow-lift); border: none; }
+  .tier--featured .name { color: var(--gold-light); }
+  .tier--featured .term, .tier--featured .desc { color: var(--on-ink-muted); }
+  .tier--featured .badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    color: #15130e; border-radius: 999px; padding: 4px 16px;
+    font-size: 0.6rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    box-shadow: var(--shadow-glow); white-space: nowrap;
+  }
+  .tiers-note { margin-top: 24px; text-align: center; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── steps ────────────────────────────────────────────────── */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .step { padding: 28px; transition: transform .3s, box-shadow .3s; }
+  .step:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .step .num {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    color: #15130e; font-weight: 800; font-size: 0.9rem;
+  }
+  .step h3 { margin-top: 16px; font-size: 1.05rem; font-weight: 800; }
+  .step p { margin: 8px 0 0; font-size: 0.85rem; color: var(--muted); }
+
+  /* ── standards ────────────────────────────────────────────── */
+  .standards { padding: 52px 40px; }
+  .standards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; margin-top: 40px; text-align: center; }
+  .standards-grid .icon {
+    margin: 0 auto; width: 48px; height: 48px; border-radius: 16px;
+    background: var(--chip-bg); display: grid; place-items: center;
+  }
+  .standards-grid .icon svg { width: 28px; height: 28px; color: var(--gold); }
+  .standards-grid h3 { margin-top: 16px; font-size: 0.95rem; font-weight: 800; }
+  .standards-grid p { margin: 8px 0 0; font-size: 0.83rem; color: var(--muted); }
+
+  /* ── closing ──────────────────────────────────────────────── */
+  .closing {
+    position: relative; overflow: hidden; border-radius: 28px;
+    background: var(--ink); color: var(--on-ink);
+    padding: 68px 40px; text-align: center;
+  }
+  .closing::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(60% 90% at 50% 110%, rgba(179,144,63,.28) 0%, transparent 65%);
+  }
+  .closing > * { position: relative; }
+  .closing h2 { margin: 20px auto 0; max-width: 40rem; font-size: clamp(1.7rem, 3.6vw, 2.4rem); font-weight: 800; color: #fbf9f4; }
+  .closing p { margin: 20px auto 0; max-width: 32rem; font-size: 0.9rem; color: var(--on-ink-muted); }
+  .closing .hero-ctas { justify-content: center; }
+
+  /* ── footer ───────────────────────────────────────────────── */
+  footer { margin-top: 96px; background: var(--ink); color: var(--on-ink); padding: 48px 20px; text-align: center; }
+  footer .brand { justify-content: center; }
+  footer .fine { margin: 16px auto 0; max-width: 36rem; font-size: 0.75rem; color: rgba(244,239,228,.5); }
+  footer .powered { margin-top: 12px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(244,239,228,.3); }
+</style>
+
+<!-- ══ Nav ══════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/>
+        <circle cx="32" cy="32" r="26.4" stroke="currentColor" stroke-width="0.5"/>
+        <path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">HomePi</span>
+      <span class="brand-tag">Hub</span>
+    </a>
+    <div class="nav-links">
+      <a href="#collection">Collection</a>
+      <a href="#placement">Placement</a>
+      <a href="#how">How it works</a>
+      <a class="nav-cta" href="#founding">Get early access</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+  <!-- ══ Hero ══════════════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="chip chip--onink"><span class="dot"></span>The Pi-native property house</span>
+        <h1>Fine property meets <span class="grad">the Pi economy</span></h1>
+        <p>
+          A global collection of residences, commercial assets, and land — free for every
+          investor, presented by verified professionals, with placement settled purely in Pi.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold" href="#collection">Explore the Collection</a>
+          <a class="btn btn-ghost-dark" href="#professionals">For Professionals →</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>0</b><span>investor fees</span></div>
+          <div><b>π</b><span>only currency</span></div>
+          <div><b>4</b><span>launch markets</span></div>
+        </div>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/>
+          <circle cx="32" cy="32" r="26.4" stroke="currentColor" stroke-width="0.5"/>
+          <path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ Collection preview ════════════════════════════════════ -->
+  <section id="collection">
+    <div class="sec-head">
+      <span class="chip"><span class="dot"></span>Curated</span>
+      <h2>A collection, not a classifieds page</h2>
+      <p class="lede">
+        Every consignment is reviewed before it joins the collection. Investment metrics —
+        yield, area, Pi and reference pricing — are presented plainly on every card.
+      </p>
+    </div>
+    <div class="cards">
+      <div class="listing card">
+        <div class="listing-art" style="background: radial-gradient(120% 120% at 20% 0%, #2b473c, #101f19);">
+          <span class="feat">★ Featured</span>
+          <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="type">Residence</span>
+        </div>
+        <div class="listing-body">
+          <div class="price-row"><b>3,200 π</b><span>≈ $125,000</span></div>
+          <h3>2BR apartment in Westlands — Nairobi</h3>
+          <p class="loc">Nairobi, Kenya</p>
+          <p class="meta">2 bd · 2 ba · 96 m² · 9.1% yield</p>
+        </div>
+      </div>
+      <div class="listing card">
+        <div class="listing-art" style="background: radial-gradient(120% 120% at 20% 0%, #2b3a58, #131826);">
+          <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="type">Residence</span>
+        </div>
+        <div class="listing-body">
+          <div class="price-row"><b>5,900 π</b><span>≈ $229,000</span></div>
+          <h3>Renovated 2BR near the beach — Valencia</h3>
+          <p class="loc">Valencia, Spain</p>
+          <p class="meta">2 bd · 2 ba · 84 m² · 6.9% yield</p>
+        </div>
+      </div>
+      <div class="listing card">
+        <div class="listing-art" style="background: radial-gradient(120% 120% at 20% 0%, #4a3128, #231712);">
+          <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span class="type">Commercial</span>
+        </div>
+        <div class="listing-body">
+          <div class="price-row"><b>6,100 π</b><span>≈ $238,000</span></div>
+          <h3>Beachfront commercial unit — Mombasa, Nyali</h3>
+          <p class="loc">Mombasa, Kenya</p>
+          <p class="meta">145 m² · 10.4% yield</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Two audiences ═════════════════════════════════════════ -->
+  <section id="professionals">
+    <div class="split">
+      <div class="pane card">
+        <span class="chip"><span class="dot"></span>For investors</span>
+        <h3>The collection is open. Always.</h3>
+        <ul>
+          <li><span class="tick">✓</span><span><b>Search without limits.</b> Residences, commercial assets, and land across four launch markets — no paywall, no subscription.</span></li>
+          <li><span class="tick">✓</span><span><b>Judge with clear eyes.</b> Every listing carries its investment metrics — gross yield, area, reference pricing.</span></li>
+          <li><span class="tick">✓</span><span><b>Enquire in private.</b> Reach the presenting professional directly — never a call centre.</span></li>
+        </ul>
+        <a class="btn btn-ink" href="#founding">Get launch updates</a>
+      </div>
+      <div class="pane pane--ink">
+        <span class="chip chip--onink"><span class="dot"></span>For professionals</span>
+        <h3>Present your properties to the Pi economy.</h3>
+        <ul>
+          <li><span class="tick">✓</span><span><b>A new audience.</b> Pi-native and crypto-centric investors the incumbent portals do not reach.</span></li>
+          <li><span class="tick">✓</span><span><b>Placement in Pi.</b> Listings are free; featured placement is acquired in Pi alone — no banking rails in the way.</span></li>
+          <li><span class="tick">✓</span><span><b>A private office.</b> Portfolio, enquiries, and placements in one quiet dashboard.</span></li>
+        </ul>
+        <a class="btn btn-gold" href="#founding">Apply as a founding professional</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Placement tiers ═══════════════════════════════════════ -->
+  <section id="placement">
+    <div class="sec-head center">
+      <span class="chip"><span class="dot"></span>Placement</span>
+      <h2>Three tiers. One currency.</h2>
+      <p class="lede">
+        Every listing is free to publish. Professionals who wish to lead the collection
+        acquire featured placement — denominated purely in Pi.
+      </p>
+    </div>
+    <div class="tiers">
+      <div class="tier card">
+        <p class="name">Standard Featured</p>
+        <p class="amount">8<small> π</small></p>
+        <p class="term">7 days</p>
+        <p class="desc">Top of search for your city and region.</p>
+      </div>
+      <div class="tier tier--featured">
+        <span class="badge">Most chosen</span>
+        <p class="name">Premium Featured</p>
+        <p class="amount">20<small> π</small></p>
+        <p class="term">14 days</p>
+        <p class="desc">Top of search plus the homepage carousel.</p>
+      </div>
+      <div class="tier card">
+        <p class="name">Launch Spotlight</p>
+        <p class="amount">35<small> π</small></p>
+        <p class="term">21 days</p>
+        <p class="desc">Premium placement plus alert push to matching investors.</p>
+      </div>
+    </div>
+    <p class="tiers-note">Regional sponsorships for professionals arrive in the next season</p>
+  </section>
+
+  <!-- ══ How it works ══════════════════════════════════════════ -->
+  <section id="how">
+    <div class="sec-head center">
+      <span class="chip"><span class="dot"></span>The manner of things</span>
+      <h2>How it works</h2>
+    </div>
+    <div class="steps">
+      <div class="step card">
+        <span class="num">1</span>
+        <h3>Arrive</h3>
+        <p>Open HomePi Hub in the Pi Browser and sign in with your Pi identity — one gesture, no passwords.</p>
+      </div>
+      <div class="step card">
+        <span class="num">2</span>
+        <h3>Verify</h3>
+        <p>Professionals present licence and identity papers; only the verified may consign to the collection.</p>
+      </div>
+      <div class="step card">
+        <span class="num">3</span>
+        <h3>Present</h3>
+        <p>Publish listings free, then acquire featured placement in Pi when a property deserves the front of the room.</p>
+      </div>
+      <div class="step card">
+        <span class="num">4</span>
+        <h3>Connect</h3>
+        <p>Enquiries pass directly between investor and professional. We make the introduction — the rest is yours.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Standards ═════════════════════════════════════════════ -->
+  <section>
+    <div class="standards card">
+      <div class="sec-head center" style="margin-bottom: 0;">
+        <span class="chip"><span class="dot"></span>Our standards</span>
+        <h2>A marketplace worthy of your time</h2>
+      </div>
+      <div class="standards-grid">
+        <div>
+          <span class="icon"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.6"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43 M26.2 35.5 V46.5 M37.8 35.5 V46.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <h3>Verified professionals</h3>
+          <p>Identity and licence verification is required of every consigning professional, with risk-based review thereafter.</p>
+        </div>
+        <div>
+          <span class="icon"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.6"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43 M26.2 35.5 V46.5 M37.8 35.5 V46.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <h3>Curated listings</h3>
+          <p>New consignments are reviewed, and the collection is monitored for accuracy, duplication, and misrepresentation.</p>
+        </div>
+        <div>
+          <span class="icon"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.6"/><path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 35.5 H43 M26.2 35.5 V46.5 M37.8 35.5 V46.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <h3>A clear position</h3>
+          <p>HomePi Hub is a technology and advertising house — never a broker, escrow, or fiduciary. Transactions remain yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Founding season ═══════════════════════════════════════ -->
+  <section id="founding">
+    <div class="closing">
+      <span class="chip chip--onink"><span class="dot"></span>The founding season</span>
+      <h2>The first professionals to join shape the house — <span class="grad">and lead it.</span></h2>
+      <p>
+        Founding partners receive preferential placement while the collection is young.
+        Investors need nothing but curiosity — the doors are open.
+      </p>
+      <div class="hero-ctas">
+        <!-- Replace these hrefs with your real contact address / app URL before publishing -->
+        <a class="btn btn-gold" href="mailto:partners@homepihub.example?subject=Founding%20professional%20application">Apply as a Professional</a>
+        <a class="btn btn-ghost-dark" href="mailto:hello@homepihub.example?subject=Launch%20updates">Get launch updates</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══ Footer ═══════════════════════════════════════════════════ -->
+<footer>
+  <div class="brand" style="display:flex;">
+    <svg viewBox="0 0 64 64" fill="none" style="width:36px;height:36px;color:#d9bd6e;" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.1"/>
+      <circle cx="32" cy="32" r="26.4" stroke="currentColor" stroke-width="0.5"/>
+      <path d="M17.5 30.5 L32 18.5 L46.5 30.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M21 35.5 H43" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M26.2 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M37.8 35.5 V46.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <span class="brand-name">HomePi</span>
+    <span class="brand-tag">Hub</span>
+  </div>
+  <p class="fine">
+    HomePi Hub is a technology &amp; advertising platform — not a broker, escrow service,
+    or fiduciary. Always verify listings independently.
+  </p>
+  <p class="powered">Powered by the Pi ecosystem</p>
+</footer>
+</body>
+</html>
