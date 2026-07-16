@@ -55,12 +55,20 @@ export default async function AgentDashboard() {
             recent enquir{leads.length === 1 ? "y" : "ies"}
           </p>
         </div>
-        <Link
-          href="/agent/new"
-          className="rounded-full bg-gold px-7 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
-        >
-          + New Listing
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/agent/sponsorships"
+            className="rounded-full border border-ink/30 px-6 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:border-gold-dark hover:text-gold-dark"
+          >
+            Area Sponsorships
+          </Link>
+          <Link
+            href="/agent/new"
+            className="rounded-full bg-gold px-7 py-3 text-[0.7rem] font-semibold uppercase tracking-luxe text-ink transition hover:bg-gold-light"
+          >
+            + New Listing
+          </Link>
+        </div>
       </div>
 
       <section>
@@ -77,6 +85,7 @@ export default async function AgentDashboard() {
                   <th className="px-5 py-3.5">Property</th>
                   <th className="px-5 py-3.5">Price</th>
                   <th className="px-5 py-3.5">Status</th>
+                  <th className="px-5 py-3.5">Views</th>
                   <th className="px-5 py-3.5">Enquiries</th>
                   <th className="px-5 py-3.5">Placement</th>
                   <th className="px-5 py-3.5"></th>
@@ -114,6 +123,7 @@ export default async function AgentDashboard() {
                           {l.status === "PENDING_REVIEW" ? "In review" : l.status.toLowerCase()}
                         </span>
                       </td>
+                      <td className="px-5 py-4 text-stone">{l.views}</td>
                       <td className="px-5 py-4">{l._count.leads}</td>
                       <td className="px-5 py-4">
                         {featured ? (
@@ -164,6 +174,11 @@ export default async function AgentDashboard() {
                     <span className="ml-3 font-sans text-xs font-normal text-gold-dark">
                       {lead.contact}
                     </span>
+                    {lead.via === "SPONSORED" && (
+                      <span className="ml-3 rounded-full bg-gold/15 px-2.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-wide2 text-gold-dark">
+                        Routed · Sponsorship
+                      </span>
+                    )}
                   </p>
                   <p className="text-[0.65rem] uppercase tracking-wide2 text-stone">
                     {lead.createdAt.toLocaleString()} · {lead.listing.title}

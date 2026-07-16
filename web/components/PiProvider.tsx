@@ -47,8 +47,13 @@ type PiContextValue = {
   loginWithPi: () => Promise<void>;
   loginDemo: (role: "INVESTOR" | "AGENT" | "ADMIN") => Promise<void>;
   logout: () => Promise<void>;
-  /** Buys a featured slot for a listing. Resolves when the purchase is finalized. */
-  purchaseFeature: (listingId: string, productId: string) => Promise<void>;
+  /** Buys an ad product (featured slot or sponsorship). Resolves when finalized. */
+  purchase: (order: {
+    productId: string;
+    listingId?: string;
+    country?: string;
+    city?: string;
+  }) => Promise<void>;
 };
 
 const PiContext = createContext<PiContextValue | null>(null);
@@ -115,9 +120,14 @@ export function PiProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }, []);
 
-  const purchaseFeature = useCallback(
-    async (listingId: string, productId: string) => {
-      const order = await postJson("/api/payments/create", { listingId, productId });
+  const purchase = useCallback(
+    async (orderInput: {
+      productId: string;
+      listingId?: string;
+      country?: string;
+      city?: string;
+    }) => {
+      const order = await postJson("/api/payments/create", orderInput);
 
       if (!window.Pi || order.demoMode) {
         // Outside the Pi Browser (or with no PI_API_KEY configured) fall back to
@@ -132,7 +142,7 @@ export function PiProvider({ children }: { children: React.ReactNode }) {
           {
             amount: order.amountPi,
             memo: order.memo,
-            metadata: { paymentId: order.paymentId, listingId, productId },
+            metadata: { paymentId: order.paymentId, ...orderInput },
           },
           {
             onReadyForServerApproval: async (piPaymentId) => {
@@ -168,7 +178,7 @@ export function PiProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <PiContext.Provider
-      value={{ user, piAvailable, refreshUser, loginWithPi, loginDemo, logout, purchaseFeature }}
+      value={{ user, piAvailable, refreshUser, loginWithPi, loginDemo, logout, purchase }}
     >
       <Script src="https://sdk.minepi.com/pi-sdk.js" onReady={onSdkReady} />
       {children}

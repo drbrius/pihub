@@ -79,6 +79,7 @@ export default async function AdminConsole() {
       prisma.listing.count({ where: { status: "ACTIVE" } }),
       prisma.lead.count(),
       prisma.payment.count({ where: { status: "COMPLETED" } }),
+      prisma.sponsorship.count({ where: { endDate: { gt: new Date() } } }),
     ]),
     prisma.auditLog.findMany({
       orderBy: { createdAt: "desc" },
@@ -87,7 +88,8 @@ export default async function AdminConsole() {
     }),
   ]);
 
-  const [totalUsers, totalAgents, activeListings, totalLeads, completedPayments] = counts;
+  const [totalUsers, totalAgents, activeListings, totalLeads, completedPayments, activeSponsorships] =
+    counts;
 
   return (
     <div className="space-y-12">
@@ -99,12 +101,13 @@ export default async function AdminConsole() {
         <div className="mt-3 h-px w-16 bg-gold" />
       </div>
 
-      <section className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <section className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <Stat label="Members" value={totalUsers} />
         <Stat label="Professionals" value={totalAgents} />
         <Stat label="Live listings" value={activeListings} />
         <Stat label="Enquiries" value={totalLeads} />
         <Stat label="Completed payments" value={completedPayments} />
+        <Stat label="Active sponsorships" value={activeSponsorships} />
       </section>
 
       {/* ── Professional applications ──────────────────────────── */}

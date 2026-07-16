@@ -12,7 +12,7 @@ export function PromotePanel({
   listingId: string;
   products: AdProduct[];
 }) {
-  const { purchaseFeature, piAvailable } = usePi();
+  const { purchase, piAvailable } = usePi();
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -22,7 +22,7 @@ export function PromotePanel({
     setBusy(productId);
     setError("");
     try {
-      await purchaseFeature(listingId, productId);
+      await purchase({ productId, listingId });
       setDone(true);
       router.refresh();
     } catch (e) {

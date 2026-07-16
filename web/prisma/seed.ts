@@ -140,6 +140,44 @@ async function main() {
     create: { username: "demo_admin", role: "ADMIN", kycStatus: "VERIFIED" },
   });
 
+  // Second professional with an active Nairobi sponsorship so the
+  // area-specialist card and lead routing are demonstrable out of the box.
+  const jane = await prisma.user.upsert({
+    where: { username: "wanjiku_estates" },
+    update: { role: "AGENT", kycStatus: "VERIFIED", riskTier: "LOW" },
+    create: { username: "wanjiku_estates", role: "AGENT", kycStatus: "VERIFIED", riskTier: "LOW" },
+  });
+  await prisma.professionalApplication.upsert({
+    where: { userId: jane.id },
+    update: {},
+    create: {
+      userId: jane.id,
+      fullName: "Jane Wanjiku",
+      companyName: "Wanjiku Estates Ltd",
+      licenseNumber: "EARB-2214",
+      licenseAuthority: "Estate Agents Registration Board (KE)",
+      country: "Kenya",
+      regions: "Nairobi, Kiambu",
+      bio: "Twelve years in Nairobi residential sales, focused on Westlands, Kilimani, and diaspora buyers.",
+      status: "APPROVED",
+      riskTier: "LOW",
+      decidedAt: new Date(),
+    },
+  });
+  const sponsorship = await prisma.sponsorship.findFirst({
+    where: { agentId: jane.id, country: "Kenya", city: "Nairobi", endDate: { gt: new Date() } },
+  });
+  if (!sponsorship) {
+    await prisma.sponsorship.create({
+      data: {
+        agentId: jane.id,
+        country: "Kenya",
+        city: "Nairobi",
+        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      },
+    });
+  }
+
   const count = await prisma.listing.count();
   if (count > 0) {
     console.log(`Skipping seed: ${count} listings already present.`);

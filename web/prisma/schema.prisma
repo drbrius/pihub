@@ -18,10 +18,11 @@ model User {
   listings    Listing[]
   payments    Payment[]
   leads       Lead[]                   @relation("AgentLeads")
-  application ProfessionalApplication?
-  favorites   Favorite[]
-  reports     Report[]
-  auditEvents AuditLog[]
+  application  ProfessionalApplication?
+  favorites    Favorite[]
+  reports      Report[]
+  auditEvents  AuditLog[]
+  sponsorships Sponsorship[]            @relation("Sponsorships")
 }
 
 model ProfessionalApplication {
@@ -62,6 +63,7 @@ model Listing {
   areaSqm       Int?
   grossYieldPct Float? // simple investor metric
   photoSeed     String? // seed for placeholder artwork until real media uploads land
+  views         Int       @default(0) // detail-page view counter for agent analytics
   featuredUntil DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -80,6 +82,7 @@ model Lead {
   contact   String // email / phone / Pi username as given by the inquirer
   message   String
   status    String   @default("NEW") // NEW | CONTACTED | CLOSED
+  via       String   @default("DIRECT") // DIRECT (listing agent) | SPONSORED (routed to a regional sponsor)
   createdAt DateTime @default(now())
 }
 
@@ -132,4 +135,15 @@ model Payment {
   durationDays Int?
   status       String   @default("CREATED") // CREATED | APPROVED | COMPLETED | CANCELLED
   createdAt    DateTime @default(now())
+}
+
+model Sponsorship {
+  id        String   @id @default(cuid())
+  agent     User     @relation("Sponsorships", fields: [agentId], references: [id])
+  agentId   String
+  country   String
+  city      String? // null sponsors the whole country
+  startDate DateTime @default(now())
+  endDate   DateTime
+  createdAt DateTime @default(now())
 }

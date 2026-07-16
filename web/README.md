@@ -66,9 +66,24 @@ Sign in at `/login`:
   (NEW → CONTACTED → CLOSED)
 - Every administrative decision is written to the audit log
 
-## Not yet implemented (Phase 3+)
+**Revenue & reach (Phase 3)**
 
-- Sponsored Agent regional subscriptions, banner ads
+- Area Sponsorships (the "Premier Agent"-style product): agents buy a
+  city (60 π/30d) or country (150 π/30d) market at
+  `/agent/sponsorships`; repeat purchases extend the term
+- Sponsors appear as the "Area specialist · Sponsored" card on every
+  listing page in their market, and enquiries are routed to up to two
+  sponsors alongside the listing agent (leads carry a DIRECT/SPONSORED
+  badge in the inbox)
+- Public professional profiles at `/agents/[username]`: credentials,
+  licence, sponsored markets, live portfolio, view totals
+- Listing view counters feed a Views column in the Private Office and
+  portfolio totals on profiles; active sponsorships appear in the
+  Registry stats
+
+## Not yet implemented (Phase 4+)
+
+- Banner ads (third ad product)
 - Real media uploads (placeholder artwork is generated per listing)
 - Saved searches, alerts, ROI calculators
 - Sanctions/PEP screening integrations and re-KYC scheduling (policy

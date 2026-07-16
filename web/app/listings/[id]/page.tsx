@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { currentUser } from "@/lib/session";
+import { activeSponsors } from "@/lib/sponsors";
 import { LeadForm } from "@/components/LeadForm";
 import { FavoriteButton, ReportButton } from "@/components/ListingInteractions";
 import { placeholderStyle, typeLabel } from "@/lib/placeholder";
@@ -36,6 +38,16 @@ export default async function ListingPage({ params }: { params: { id: string } }
         })
       )
     : false;
+
+  // Count public views (not the owner or admins checking their own work).
+  if (listing.status === "ACTIVE" && !isPrivileged) {
+    await prisma.listing.update({
+      where: { id: listing.id },
+      data: { views: { increment: 1 } },
+    });
+  }
+
+  const sponsor = (await activeSponsors(listing.country, listing.city, listing.agentId))[0];
 
   const featured = listing.featuredUntil && listing.featuredUntil.getTime() > Date.now();
   const facts: [string, string][] = [];
@@ -116,15 +128,56 @@ export default async function ListingPage({ params }: { params: { id: string } }
         <aside className="space-y-5">
           <div className="rounded-2xl border border-hairline bg-white shadow-soft p-6">
             <p className="text-[0.6rem] uppercase tracking-luxe text-stone">Presented by</p>
-            <p className="mt-2 text-lg font-bold tracking-tight text-ink">
+            <Link
+              href={`/agents/${listing.agent.username}`}
+              className="mt-2 block text-lg font-bold tracking-tight text-ink transition hover:text-gold-dark"
+            >
               {listing.agent.username}
-            </p>
+            </Link>
             {listing.agent.kycStatus === "VERIFIED" && (
               <p className="mt-2 inline-block rounded-full border border-gold-dark/40 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-luxe text-gold-dark">
                 ✓ Verified Professional
               </p>
             )}
           </div>
+
+          {sponsor && (
+            <div className="relative overflow-hidden rounded-2xl bg-ink p-6 shadow-lift">
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(80% 80% at 90% 0%, rgba(179,144,63,.22) 0%, transparent 60%)",
+                }}
+              />
+              <div className="relative">
+                <p className="text-[0.6rem] font-semibold uppercase tracking-luxe text-gold-light">
+                  Area specialist · Sponsored
+                </p>
+                <Link
+                  href={`/agents/${sponsor.agent.username}`}
+                  className="mt-2 block text-lg font-bold tracking-tight text-paper transition hover:text-gold-light"
+                >
+                  {sponsor.agent.username}
+                </Link>
+                {sponsor.agent.application?.companyName && (
+                  <p className="mt-0.5 text-xs text-ivory/60">
+                    {sponsor.agent.application.companyName}
+                  </p>
+                )}
+                <p className="mt-2 text-xs leading-relaxed text-ivory/70">
+                  Specialist for {sponsor.city ? `${sponsor.city}, ` : "all of "}
+                  {sponsor.country} on HomePi Hub.
+                </p>
+                <Link
+                  href={`/agents/${sponsor.agent.username}`}
+                  className="mt-4 inline-block rounded-full bg-gradient-to-r from-gold-light to-gold px-5 py-2 text-[0.65rem] font-semibold uppercase tracking-wide2 text-ink transition hover:brightness-110"
+                >
+                  View profile
+                </Link>
+              </div>
+            </div>
+          )}
 
           <FavoriteButton
             listingId={listing.id}
